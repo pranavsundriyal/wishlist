@@ -1,0 +1,39 @@
+[
+  {
+    "email" : "psundriyal@expedia.com",
+    "criterias" : [
+      {
+        "criteriaType" : "price",
+        "criteriaMap" : {
+          "lowerLimit" : "1000"
+        }
+    },
+      {
+        "criteriaType" : "price",
+        "criteriaMap" : {
+          "lowerLimit" : "1000"
+        }
+      }
+    ]
+  }
+]/*,
+  {
+    "email" : "psundriyal@orbitz.com",
+    "criterias" : [
+      {
+        "criteriaType" : "price",
+        "criteriaMap" : {
+          "lowerLimit" : "800"
+        }
+      },
+      {
+        "criteriaType" : "price",
+        "criteriaMap" : {
+          "lowerLimit" : "800"
+        }
+      }
+    ]
+  }
+
+]
+*/
