@@ -20,6 +20,7 @@ public class WishListMessage {
         sb.append(createSubject(rule));
         sb.append("\n\n");
 
+        sb.append("Criterias\n");
         for (Criteria criteria : rule.getCriterias()){
             sb.append(criteria.getCriteriaType()).append("-").append(criteria.getCriteriaMap().toString()).append("\n");
         }

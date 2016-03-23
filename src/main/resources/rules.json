@@ -56,7 +56,7 @@
       {
         "criteriaType" : "price",
         "criteriaMap" : {
-          "lowerLimit" : "1100"
+          "lowerLimit" : "1000"
         }
       },
       {
