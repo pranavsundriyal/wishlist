@@ -15,9 +15,9 @@ public class WishListMessage {
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append("\nFor Trip\n\n");
+        sb.append("\nFor Trip\n");
 
-        createSubject(rule);
+        sb.append(createSubject(rule));
         sb.append("\n\n");
 
         for (Criteria criteria : rule.getCriterias()){
