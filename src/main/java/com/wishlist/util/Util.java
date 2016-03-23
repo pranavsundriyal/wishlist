@@ -1,8 +1,10 @@
 package com.wishlist.util;
 
 import com.wishlist.model.Leg;
+import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.Segment;
+import com.wishlist.model.rule.Rule;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.Duration;
@@ -65,10 +67,7 @@ public class Util {
 
     public static LocalTime parseDuration(String time){
 
-        log.info(time);
-        LocalTime duration= null;
-
-
+        LocalTime duration;
         String[] t = time.split("PT|H|M");
 
         if (t[t.length-2].equals("")) {
@@ -100,6 +99,17 @@ public class Util {
         t2 = t2.plusMinutes(new Long(t1.getMinute()));
         t2 = t2.plusHours(new Long(t1.getHour()));
         return t2;
+    }
+
+    public static Request creatRequestFromRule(Rule rule){
+        Request request = null;
+        if (rule.getArrivalDate() == null) {
+            request = new Request(rule.getDeparturteDate(), rule.getOrigin(), rule.getDestination());
+        } else {
+            request = new Request(rule.getArrivalDate(), rule.getDeparturteDate(), rule.getOrigin(),
+                    rule.getDestination());
+        }
+        return request;
     }
 
 }

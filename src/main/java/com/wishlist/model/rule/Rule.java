@@ -1,5 +1,6 @@
 package com.wishlist.model.rule;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
@@ -8,15 +9,27 @@ import java.util.List;
 /**
  * Created by psundriyal on 3/20/16.
  */
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 @JsonPropertyOrder({
         "email",
+        "origin",
+        "destination",
+        "departurteDate",
+        "arrivalDate",
         "criterias"
 })
 public class Rule {
 
     @JsonProperty("email")
     private String email;
+    @JsonProperty("arrivalDate")
+    String arrivalDate;
+    @JsonProperty("departurteDate")
+    String departurteDate;
+    @JsonProperty("origin")
+    String origin;
+    @JsonProperty("destination")
+    String destination;
 
     @JsonProperty("criterias")
     private List<Criteria> criterias;
@@ -35,5 +48,37 @@ public class Rule {
 
     public void setCriterias(List<Criteria> criterias) {
         this.criterias = criterias;
+    }
+
+    public String getArrivalDate() {
+        return arrivalDate;
+    }
+
+    public void setArrivalDate(String arrivalDate) {
+        this.arrivalDate = arrivalDate;
+    }
+
+    public String getDeparturteDate() {
+        return departurteDate;
+    }
+
+    public void setDeparturteDate(String departurteDate) {
+        this.departurteDate = departurteDate;
+    }
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getDestination() {
+        return destination;
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
     }
 }

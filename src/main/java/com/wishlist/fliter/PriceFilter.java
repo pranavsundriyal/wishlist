@@ -5,16 +5,16 @@ import com.wishlist.model.slim.SearchResult;
 
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-/**
- * Created by psundriyal on 3/16/16.
- */
+
 public class PriceFilter implements Filter {
 
 
     private static final String LOWER_PRICE_LIMIT="lowerLimit";
 
+    private Logger log = Logger.getLogger(this.getClass().getName());
 
 
     public SlimResponse filter(SlimResponse response, Map<String, String> criteriaMap) {
@@ -26,7 +26,9 @@ public class PriceFilter implements Filter {
                     .collect(Collectors.toList());
         }
 
+        log.info("price filter applied - search result size: "+filteredSearchResults.size());
         response.setSearchResultList(filteredSearchResults);
+
         return response;
     }
 }

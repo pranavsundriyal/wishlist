@@ -1,17 +1,87 @@
 [
   {
     "email" : "psundriyal@expedia.com",
+    "origin" : "CHI",
+    "destination" : "BOM",
+    "departurteDate" : "2016-04-20",
+    "arrivalDate" : "2016-05-02",
     "criterias" : [
       {
         "criteriaType" : "price",
         "criteriaMap" : {
-          "lowerLimit" : "1000"
+          "lowerLimit" : "700"
         }
-    },
+      },
+      {
+        "criteriaType" : "duration",
+        "criteriaMap" : {
+          "hours" : "27"
+        }
+      },
+      {
+        "criteriaType" : "stops",
+        "criteriaMap" : {
+          "noStops" : "1"
+        }
+      },
+      {
+        "criteriaType" : "flightDuration",
+        "criteriaMap" : {
+          "hours" : "22"
+        }
+      },
+      {
+        "criteriaType" : "departureTime",
+        "criteriaMap" : {
+          "hours" : "18",
+          "time" : "after"
+        }
+      },
+      {
+        "criteriaType" : "airline",
+        "criteriaMap" : {
+          "qualifier" : "include",
+          "list" : "Emirates"
+        }
+      }
+    ]
+  },
+  {
+    "email" : "psundriyal@orbitz.com",
+    "origin" : "CHI",
+    "destination" : "BOM",
+    "departurteDate" : "2016-06-24",
+    "arrivalDate" : "2016-07-10",
+    "criterias" : [
       {
         "criteriaType" : "price",
         "criteriaMap" : {
-          "lowerLimit" : "1000"
+          "lowerLimit" : "1100"
+        }
+      },
+      {
+        "criteriaType" : "duration",
+        "criteriaMap" : {
+          "hours" : "25"
+        }
+      },
+      {
+        "criteriaType" : "stops",
+        "criteriaMap" : {
+          "noStops" : "1"
+        }
+      },
+      {
+        "criteriaType" : "flightDuration",
+        "criteriaMap" : {
+          "hours" : "22"
+        }
+      },
+      {
+        "criteriaType" : "departureTime",
+        "criteriaMap" : {
+          "hours" : "18",
+          "time" : "after"
         }
       }
     ]

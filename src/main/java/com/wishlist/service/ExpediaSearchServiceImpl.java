@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-@Qualifier("expedia")
 public class ExpediaSearchServiceImpl implements Runnable{
 
 
@@ -22,10 +21,6 @@ public class ExpediaSearchServiceImpl implements Runnable{
 
 
     private Response repsonse;
-
-    public ExpediaSearchServiceImpl(Request request) {
-        this.request = request;
-    }
 
     /*
     * Need this constructor for caching*/

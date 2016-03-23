@@ -5,12 +5,14 @@ import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.model.Leg;
 import com.wishlist.model.Offer;
 import com.wishlist.model.slim.SearchResult;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+@Component
 public class SlimConverter {
 
     public SlimResponse createSlimResponse(Response response, Map<String, Leg> legMap) {

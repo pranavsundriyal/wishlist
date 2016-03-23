@@ -9,7 +9,6 @@ import java.util.HashMap;
 /**
  * Created by psundriyal on 3/20/16.
  */
-
 @JsonPropertyOrder({
         "criteriaType",
         "criteriaMap"
