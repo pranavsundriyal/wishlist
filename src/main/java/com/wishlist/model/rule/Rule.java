@@ -16,7 +16,7 @@ import java.util.List;
         "destination",
         "departurteDate",
         "arrivalDate",
-        "criterias"
+        "filters"
 })
 public class Rule {
 
@@ -30,9 +30,16 @@ public class Rule {
     String origin;
     @JsonProperty("destination")
     String destination;
+    @JsonProperty("filters")
+    private List<Filter> filters;
 
-    @JsonProperty("criterias")
-    private List<Criteria> criterias;
+    public List<Filter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(List<Filter> filters) {
+        this.filters = filters;
+    }
 
     public String getEmail() {
         return email;
@@ -40,14 +47,6 @@ public class Rule {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public List<Criteria> getCriterias() {
-        return criterias;
-    }
-
-    public void setCriterias(List<Criteria> criterias) {
-        this.criterias = criterias;
     }
 
     public String getArrivalDate() {

@@ -1,7 +1,7 @@
 package com.wishlist.thread;
 
 import com.wishlist.model.rule.Rule;
-import com.wishlist.rule_engine.RuleExecutor;
+import com.wishlist.filter_engine.FilterChainExecutor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,8 +20,8 @@ public class ThreadManager {
     public int executeRules(List<Rule> ruleList){
 
         for (Rule rule: ruleList){
-            RuleExecutor ruleExecutor = new RuleExecutor(rule);
-            executorService.execute(ruleExecutor);
+            FilterChainExecutor filterChainExecutor = new FilterChainExecutor(rule);
+            executorService.execute(filterChainExecutor);
         }
         return ruleList.size();
     }

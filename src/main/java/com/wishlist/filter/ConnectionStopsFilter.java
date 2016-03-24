@@ -1,4 +1,4 @@
-package com.wishlist.fliter;
+package com.wishlist.filter;
 
 import com.wishlist.model.Leg;
 import com.wishlist.model.Segment;
@@ -14,8 +14,7 @@ import java.util.logging.Logger;
 /**
  * Created by psundriyal on 3/23/16.
  */
-public class AirlineFilter implements Filter {
-
+public class ConnectionStopsFilter implements Filter {
     private static String LIST = "list";
     private static String QUALIFIER = "qualifier";
     private Logger log = Logger.getLogger(this.getClass().getName());
@@ -24,31 +23,31 @@ public class AirlineFilter implements Filter {
     public SlimResponse filter(SlimResponse slimResponse, Map<String, String> criteriaMap) {
         List<SearchResult> filteredSearchResult = new ArrayList<>();
         if (criteriaMap.get(LIST) != null && criteriaMap.get(QUALIFIER) !=null) {
-            List<String> airlineList = Arrays.asList(criteriaMap.get(LIST).split("\\s*,\\s*"));
+            List<String> locationList = Arrays.asList(criteriaMap.get(LIST).split("\\s*,\\s*"));
             for (SearchResult searchResult : slimResponse.getSearchResultList()) {
                 if (criteriaMap.get(QUALIFIER).equalsIgnoreCase("include")){
-                    if (containsAirline(searchResult,airlineList)){
+                    if (containsLocation(searchResult,locationList)){
                         filteredSearchResult.add(searchResult);
                     }
                 }
                 if (criteriaMap.get(QUALIFIER).equalsIgnoreCase("exclude")){
-                    if (!containsAirline(searchResult,airlineList)){
+                    if (!containsLocation(searchResult,locationList)){
                         filteredSearchResult.add(searchResult);
                     }
                 }
             }
         }
-        log.info("airline filter applied - search result size: " + filteredSearchResult.size());
+        log.info("connection stop filter applied - search result size: " + filteredSearchResult.size());
 
         slimResponse.setSearchResultList(filteredSearchResult);
         return slimResponse;
     }
 
-    public Boolean containsAirline(SearchResult searchResult, List airlineList){
+    public Boolean containsLocation(SearchResult searchResult, List locationList){
 
         for (Leg leg : searchResult.getLegList()){
             for (Segment segment : leg.getSegments()){
-                if (airlineList.contains(segment.getAirlineName())){
+                if (locationList.contains(segment.getArrivalAirportCode())){
                     return true;
                 }
             }

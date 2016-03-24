@@ -1,4 +1,4 @@
-package com.wishlist.fliter;
+package com.wishlist.filter;
 
 import com.wishlist.model.Leg;
 import com.wishlist.model.slim.SearchResult;

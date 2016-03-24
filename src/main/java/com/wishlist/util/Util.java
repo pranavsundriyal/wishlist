@@ -102,7 +102,7 @@ public class Util {
     }
 
     public static Request creatRequestFromRule(Rule rule){
-        Request request = null;
+        Request request;
         if (rule.getArrivalDate() == null) {
             request = new Request(rule.getDeparturteDate(), rule.getOrigin(), rule.getDestination());
         } else {
@@ -110,6 +110,14 @@ public class Util {
                     rule.getDestination());
         }
         return request;
+    }
+
+    public static String createSubject(Rule rule){
+        StringBuffer sb = new StringBuffer();
+        sb.append(rule.getOrigin()).append("-").append(rule.getDestination()).append("/")
+                .append(rule.getDeparturteDate()).append("/").append(rule.getArrivalDate()).append("\n");
+
+        return sb.toString();
     }
 
 }

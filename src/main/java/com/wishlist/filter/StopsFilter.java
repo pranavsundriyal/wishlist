@@ -1,4 +1,4 @@
-package com.wishlist.fliter;
+package com.wishlist.filter;
 
 import com.wishlist.model.Leg;
 import com.wishlist.model.slim.SearchResult;
@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 
 public class StopsFilter implements Filter {

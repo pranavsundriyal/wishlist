@@ -3,25 +3,25 @@ package com.wishlist;
 import org.junit.Before;
 import org.junit.Test;
 import com.wishlist.model.rule.Rule;
-import com.wishlist.rule_engine.RuleEngine;
+import com.wishlist.filter_engine.FilterChainEngine;
 
 import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertNotNull;
 
-public class RuleEngineTest {
+public class FilterChainEngineTest {
 
-    private RuleEngine ruleEngine;
+    private FilterChainEngine filterChainEngine;
 
     @Before
     public void setUp(){
-        ruleEngine = new RuleEngine();
+        filterChainEngine = new FilterChainEngine();
     }
 
     @Test
     public void readFileTest() throws IOException{
-        List<Rule> rulesList  = ruleEngine.readRule();
+        List<Rule> rulesList  = filterChainEngine.readRules();
         assertNotNull(rulesList);
     }
 }

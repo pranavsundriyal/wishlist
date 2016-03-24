@@ -2,6 +2,7 @@ package com.wishlist.email;
 
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
+import com.wishlist.util.Util;
 
 import java.util.*;
 import javax.mail.*;
@@ -35,7 +36,7 @@ public class Email {
             msg.setFrom(new InternetAddress(username));
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(rule.getEmail(),false));
-            msg.setSubject(new WishListMessage().createSubject(rule));
+            msg.setSubject(Util.createSubject(rule));
             msg.setText(new WishListMessage().createMessage(rule, response));
             msg.setSentDate(new Date());
             Transport.send(msg);
