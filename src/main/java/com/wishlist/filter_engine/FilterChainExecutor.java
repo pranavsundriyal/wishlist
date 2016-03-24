@@ -49,7 +49,7 @@ public class FilterChainExecutor implements Runnable {
 
             doLogging(slimResponse);
             try {
-                TimeUnit.HOURS.sleep(6);
+                TimeUnit.HOURS.sleep(12);
             } catch (InterruptedException exception) {
             }
         }
