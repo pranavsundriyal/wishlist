@@ -9,7 +9,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "1500"
+          "lowerLimit" : "1000"
         }
       },
       {

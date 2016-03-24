@@ -1,6 +1,7 @@
 package com.wishlist.email;
 
 import com.wishlist.model.Leg;
+import com.wishlist.model.Segment;
 import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SearchResult;
@@ -29,7 +30,19 @@ public class WishListMessage {
         sb.append("\nPrices found for the above Filters\n");
 
         for (SearchResult searchResult : response.getSearchResultList()){
-            sb.append(searchResult.getPrice()).append("\n");
+            sb.append(searchResult.getPrice()+" USD").append("\n");
+            for (Leg leg : searchResult.getLegList()) {
+                sb.append("Time departure : " +leg.getDepartureTime().toString()+" | arrival: "+leg.getArrivalTime()+"\n");
+                sb.append("Total duration: "+Util.addLocalTime(leg.getDuration(),leg.getLayover()).toString()+
+                        " | Layover: " +leg.getLayover().toString()+"\n");
+                for (Segment segment : leg.getSegments()) {
+                    sb.append("Connection Origin: "+segment.getDepartureAirportLocation()+
+                            " | Destination: "+segment.getArrivalAirportLocation()+
+                            " | Airline: "+segment.getAirlineName());
+                    sb.append("\n");
+                }
+                sb.append("\n");
+            }
         }
 
 

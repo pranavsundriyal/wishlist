@@ -3,6 +3,7 @@ package com.wishlist.filter_engine;
 import com.wishlist.controller.SearchController;
 import com.wishlist.converter.SlimConverter;
 import com.wishlist.email.Email;
+import com.wishlist.email.WishListMessage;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.rule.Rule;
@@ -11,7 +12,6 @@ import com.wishlist.model.slim.SlimResponse;
 
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.util.Util;
-import org.springframework.stereotype.Service;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -45,6 +45,7 @@ public class FilterChainExecutor implements Runnable {
 
             if (slimResponse.getSearchResultList().size()>0){
                 new Email().sendMail(slimResponse, rule);
+                log.info(new WishListMessage().createMessage(rule,slimResponse));
             }
 
             doLogging(slimResponse);
