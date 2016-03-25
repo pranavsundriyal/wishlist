@@ -27,7 +27,7 @@
       {
         "filterType" : "departureTime",
         "filterMap" : {
-          "hours" : "18",
+          "hours" : "16",
           "time" : "after"
         }
       },
@@ -68,7 +68,7 @@
       {
         "filterType" : "departureTime",
         "filterMap" : {
-          "hours" : "18",
+          "hours" : "16",
           "time" : "after"
         }
       }
@@ -129,7 +129,7 @@
       {
         "filterType" : "departureTime",
         "filterMap" : {
-          "hours" : "18",
+          "hours" : "16",
           "time" : "after"
         }
       }

@@ -34,7 +34,6 @@ public class ExpediaSearchServiceImpl implements Runnable{
         String url = API + getParams(request);
         RestTemplate restTemplate = new RestTemplate();
          Response response = restTemplate.getForObject(url, Response.class);
-        log.info(response.toString());
         return response;
     }
 

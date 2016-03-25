@@ -27,11 +27,16 @@ public class WishListMessage {
             sb.append(filter.getFilterType()).append("-").append(filter.getFilterMap().toString()).append("\n");
         }
 
-        sb.append("\nPrices found for the above Filters\n");
+        sb.append("\nTop results found for the above Filters\n");
 
-        for (SearchResult searchResult : response.getSearchResultList()){
-            sb.append(searchResult.getPrice()+" USD").append("\n");
-            for (Leg leg : searchResult.getLegList()) {
+        sb.append("\n No. of results found: " +response.getSearchResultList().size());
+        int noResults=10;
+        if (response.getSearchResultList().size() < 10) {
+            noResults = response.getSearchResultList().size();
+        }
+        for (int i =0; i< noResults; i++){
+            sb.append("\n Price: " + response.getSearchResultList().get(i).getPrice()+" USD").append("\n");
+            for (Leg leg : response.getSearchResultList().get(i).getLegList()) {
                 sb.append("Time departure : " +leg.getDepartureTime().toString()+" | arrival: "+leg.getArrivalTime()+"\n");
                 sb.append("Total duration: "+Util.addLocalTime(leg.getDuration(),leg.getLayover()).toString()+
                         " | Layover: " +leg.getLayover().toString()+"\n");

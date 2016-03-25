@@ -67,11 +67,15 @@ public class Util {
 
     public static LocalTime parseDuration(String time){
 
-        LocalTime duration;
+        LocalTime duration = null;
         String[] t = time.split("PT|H|M");
 
-        if (t[t.length-2].equals("")) {
-            duration = LocalTime.of(0, Integer.parseInt(t[t.length - 1]), 0);
+        if (t[t.length-2].equals("")){
+            if (Character.toString(time.charAt(time.length()-1)).equalsIgnoreCase("M")) {
+                duration = LocalTime.of(0, Integer.parseInt(t[t.length - 1]), 0);
+            } else if (Character.toString(time.charAt(time.length()-1)).equalsIgnoreCase("H")) {
+                duration = LocalTime.of(Integer.parseInt(t[t.length - 1]), 0, 0);
+            }
         } else {
             duration = LocalTime.of(Integer.parseInt(t[t.length - 2]), Integer.parseInt(t[t.length - 1]), 0);
         }
