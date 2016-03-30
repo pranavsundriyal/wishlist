@@ -10,13 +10,12 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-@Service
-public class ExpediaSearchServiceImpl implements Runnable{
+@Service("expedia")
+public class ExpediaSearchServiceImpl {
 
 
     private static String API = "https://www.expedia.com/api/flight/search";
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-    private Request request;
 
 
 
@@ -53,13 +52,6 @@ public class ExpediaSearchServiceImpl implements Runnable{
         params.append("&maxOfferCount=" + request.getMaxOffer());
         params.append("&eapid=128087");
         return params.toString();
-    }
-
-    @Override
-    public void run() {
-        Long curTime = System.currentTimeMillis();
-        this.setRepsonse(execute(this.request));
-        log.info("time taken for the thread to execute in milliseconds: " + (System.currentTimeMillis()-curTime));
     }
 
 

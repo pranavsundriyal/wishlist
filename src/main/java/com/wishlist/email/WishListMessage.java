@@ -7,10 +7,15 @@ import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.util.Util;
+import org.springframework.stereotype.Component;
 
 /**
  * Created by psundriyal on 3/23/16.
+ * format for url 
+ * https://www.expedia.com/Flights-Search?trip=roundtrip&leg1=from:CHI,to:BOM,departure:08/26/2016TANYT&leg2=from:BOM,to:CHI,departure:09/11/2016TANYT&passengers=adults:2&mode=search
  */
+
+@Component
 public class WishListMessage {
 
     public String createMessage(Rule rule, SlimResponse response){
@@ -22,9 +27,10 @@ public class WishListMessage {
         sb.append(Util.createSubject(rule));
         sb.append("\n\n");
 
-        sb.append("Filters\n");
+        sb.append("Filters : No. of Search Results\n");
         for (Filter filter : rule.getFilters()){
-            sb.append(filter.getFilterType()).append("-").append(filter.getFilterMap().toString()).append("\n");
+            sb.append(filter.getFilterType()).append("-").append(filter.getFilterMap().toString()).append(" : ")
+                    .append(response.getFilterCountMap().get(filter.getFilterType())).append("\n");
         }
 
         sb.append("\nTop results found for the above Filters\n");

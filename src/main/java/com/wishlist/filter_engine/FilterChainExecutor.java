@@ -12,6 +12,8 @@ import com.wishlist.model.slim.SlimResponse;
 
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.util.Util;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -22,6 +24,8 @@ import java.util.logging.Logger;
  */
 
 
+@Component
+@Configurable
 public class FilterChainExecutor implements Runnable {
 
 
@@ -30,8 +34,10 @@ public class FilterChainExecutor implements Runnable {
     public FilterChainExecutor(Rule rule){
         this.rule= rule;
     }
+    public FilterChainExecutor(){
+    }
 
-    private Logger log = Logger.getLogger(SearchController.class.getName());
+    private Logger log = Logger.getLogger(this.getClass().getName());
 
     private void execute(){
         while (true) {
@@ -50,7 +56,7 @@ public class FilterChainExecutor implements Runnable {
 
             doLogging(slimResponse);
             try {
-                TimeUnit.HOURS.sleep(12);
+                TimeUnit.HOURS.sleep(24);
             } catch (InterruptedException exception) {
             }
         }

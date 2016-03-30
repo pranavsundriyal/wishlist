@@ -2,6 +2,7 @@ package com.wishlist.thread;
 
 import com.wishlist.model.rule.Rule;
 import com.wishlist.filter_engine.FilterChainExecutor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -15,12 +16,14 @@ import java.util.concurrent.Executors;
 @Component
 public class ThreadManager {
 
-    ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private ExecutorService executorService = Executors.newFixedThreadPool(10);
 
+    @Autowired
+    private FilterChainExecutor filterChainExecutor;
     public int executeRules(List<Rule> ruleList){
 
         for (Rule rule: ruleList){
-            FilterChainExecutor filterChainExecutor = new FilterChainExecutor(rule);
+            filterChainExecutor =  new FilterChainExecutor(rule);
             executorService.execute(filterChainExecutor);
         }
         return ruleList.size();

@@ -15,6 +15,7 @@ import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -25,7 +26,6 @@ import java.util.Scanner;
 
 @Component
 public class FilterChainEngine {
-
 
     public SlimResponse process(SlimResponse response, List<Rule> ruleList){
 
@@ -39,6 +39,9 @@ public class FilterChainEngine {
     public SlimResponse processCritera(SlimResponse response, List<Filter> filterList){
 
         for (Filter filter : filterList) {
+            if (response.getSearchResultList().size() < 1) {
+                return response;
+            }
             if (filter.getFilterType().equalsIgnoreCase("price")) {
                 response = new PriceFilter().filter(response, filter.getFilterMap());
             } else if (filter.getFilterType().equalsIgnoreCase("layover")) {
@@ -58,46 +61,10 @@ public class FilterChainEngine {
             } else if (filter.getFilterType().equalsIgnoreCase("connectionStop")) {
                 response = new ConnectionStopsFilter().filter(response, filter.getFilterMap());
             }
+
+            response.getFilterCountMap().put(filter.getFilterType(), response.getSearchResultList().size());
         }
         return response;
     }
 
-
-    public List<Rule> readRules() {
-
-        String rulesString = getFile("rules.json");
-        List<Rule> ruleList = null;
-        ObjectMapper mapper = new ObjectMapper();
-        try {
-            ruleList = mapper.readValue(rulesString, new TypeReference<List<Rule>>() {
-            });
-        } catch (IOException exception) {
-            exception.printStackTrace();
-        }
-
-        return ruleList;
-    }
-
-    private String getFile(String fileName) {
-
-        StringBuilder result = new StringBuilder("");
-
-        ClassLoader classLoader = getClass().getClassLoader();
-        File file = new File(classLoader.getResource(fileName).getFile());
-
-        try (Scanner scanner = new Scanner(file)) {
-
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                result.append(line).append("\n");
-            }
-
-            scanner.close();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return result.toString();
-    }
 }
