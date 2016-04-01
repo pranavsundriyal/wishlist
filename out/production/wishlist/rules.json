@@ -50,6 +50,48 @@
       {
         "filterType" : "price",
         "filterMap" : {
+          "lowerLimit" : "170"
+        }
+      },
+      {
+        "filterType" : "duration",
+        "filterMap" : {
+          "hours" : "3"
+        }
+      },
+      {
+        "filterType" : "stops",
+        "filterMap" : {
+          "noStops" : "0"
+        }
+      },
+      {
+        "filterType" : "departureTime",
+        "filterMap" : {
+          "hours" : "16",
+          "time" : "after"
+        }
+      },
+      {
+        "filterType" : "connectionStop",
+        "filterMap" : {
+          "qualifier" : "exclude",
+          "list" : ""
+        }
+      }
+    ]
+  },
+
+  {
+    "email" : "psundriyal@expedia.com",
+    "origin" : "CHI",
+    "destination" : "ATL",
+    "departurteDate" : "2016-09-02",
+    "arrivalDate" : "2016-09-06",
+    "filters" : [
+      {
+        "filterType" : "price",
+        "filterMap" : {
           "lowerLimit" : "140"
         }
       },
@@ -117,41 +159,7 @@
       {
         "filterType" : "duration",
         "filterMap" : {
-          "hours" : "25"
-        }
-      },
-      {
-        "filterType" : "stops",
-        "filterMap" : {
-          "noStops" : "1"
-        }
-      },
-      {
-        "filterType" : "departureTime",
-        "filterMap" : {
-          "hours" : "16",
-          "time" : "after"
-        }
-      }
-    ]
-  },
-  {
-    "email" : "psundriyal@expedia.com",
-    "origin" : "CHI",
-    "destination" : "BOM",
-    "departurteDate" : "2016-05-20",
-    "arrivalDate" : "2016-06-05",
-    "filters" : [
-      {
-        "filterType" : "price",
-        "filterMap" : {
-          "lowerLimit" : "1000"
-        }
-      },
-      {
-        "filterType" : "duration",
-        "filterMap" : {
-          "hours" : "27"
+          "hours" : "28"
         }
       },
       {
