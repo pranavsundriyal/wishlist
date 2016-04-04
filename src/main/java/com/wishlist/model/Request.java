@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * To change this template use File | Settings | File Templates.
  */
 
-public class Request {
+public class Request implements Cloneable {
     String arrivalDate;
     String departurteDate;
     String origin;
@@ -34,14 +34,10 @@ public class Request {
         this.destination = destination;
     }
 
-    public Request(Request request) {
-        this.departurteDate = request.getDeparturteDate();
-        this.origin = request.getOrigin();
-        this.destination = request.getDestination();
-        this.maxOffer = request.getMaxOffer();
-        if (request.getArrivalDate() != null)
-            this.setArrivalDate(request.getArrivalDate());
-
+    public static Request cloneRequest(Request request) {
+        Request clone = new Request(request.getArrivalDate(),
+                request.getDeparturteDate(),request.getOrigin(),request.getDestination());
+        return clone;
     }
 
     public String getArrivalDate() {

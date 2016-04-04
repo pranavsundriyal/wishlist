@@ -16,6 +16,7 @@ import java.util.List;
         "destination",
         "departurteDate",
         "arrivalDate",
+        "flex",
         "filters"
 })
 public class Rule {
@@ -30,6 +31,8 @@ public class Rule {
     String origin;
     @JsonProperty("destination")
     String destination;
+    @JsonProperty("flex")
+    boolean flex;
     @JsonProperty("filters")
     private List<Filter> filters;
 
@@ -79,5 +82,13 @@ public class Rule {
 
     public void setDestination(String destination) {
         this.destination = destination;
+    }
+
+    public boolean getFlex() {
+        return flex;
+    }
+
+    public void setFlex(boolean flex) {
+        this.flex = flex;
     }
 }

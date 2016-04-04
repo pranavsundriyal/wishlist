@@ -45,9 +45,8 @@ public class SearchController {
              request = new Request(arrivalDate,departureDate, origin, destination);
         }
         Response response = searchService.execute(request);
-        Map legMap = Util.mapLegs(response);
 
-        SlimResponse slimResponse = new SlimConverter().createSlimResponse(response, legMap);
+        SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
 
         log.info("total search results : "+slimResponse.getSearchResultList().size());
         slimResponse = filterChainEngine.process(slimResponse, filterChainHelper.readRules());

@@ -36,8 +36,8 @@ public class Email {
             msg.setFrom(new InternetAddress(username));
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(rule.getEmail(),false));
-            msg.setSubject(Util.createSubject(rule));
-            msg.setText(new WishListMessage().createMessage(rule, response));
+            msg.setSubject(WishListMessage.createSubject(rule));
+            msg.setText(WishListMessage.createMessage(rule, response));
             msg.setSentDate(new Date());
             Transport.send(msg);
         }catch (MessagingException e){ System.out.println("error cause: " + e);}

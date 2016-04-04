@@ -43,7 +43,7 @@ public class ConnectionStopsFilter implements Filter {
         return slimResponse;
     }
 
-    public Boolean containsLocation(SearchResult searchResult, List locationList){
+    private Boolean containsLocation(SearchResult searchResult, List locationList){
 
         for (Leg leg : searchResult.getLegList()){
             for (Segment segment : leg.getSegments()){

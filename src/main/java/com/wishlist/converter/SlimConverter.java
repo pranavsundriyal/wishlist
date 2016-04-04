@@ -5,6 +5,7 @@ import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.model.Leg;
 import com.wishlist.model.Offer;
 import com.wishlist.model.slim.SearchResult;
+import com.wishlist.util.Util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,9 @@ public class SlimConverter {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public SlimResponse createSlimResponse(Response response, Map<String, Leg> legMap) {
+    public SlimResponse createSlimResponse(Response response) {
+
+        Map<String, Leg> legMap = Util.mapLegs(response);
 
         SlimResponse slimResponse = new SlimResponse();
 

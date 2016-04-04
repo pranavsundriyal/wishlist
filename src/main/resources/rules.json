@@ -50,7 +50,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "170"
+          "lowerLimit" : "150"
         }
       },
       {
@@ -70,13 +70,6 @@
         "filterMap" : {
           "hours" : "16",
           "time" : "after"
-        }
-      },
-      {
-        "filterType" : "connectionStop",
-        "filterMap" : {
-          "qualifier" : "exclude",
-          "list" : ""
         }
       }
     ]
@@ -149,6 +142,7 @@
     "destination" : "BOM",
     "departurteDate" : "2016-08-26",
     "arrivalDate" : "2016-09-11",
+    "flex" : true,
     "filters" : [
       {
         "filterType" : "price",
@@ -159,7 +153,7 @@
       {
         "filterType" : "duration",
         "filterMap" : {
-          "hours" : "28"
+          "hours" : "25"
         }
       },
       {

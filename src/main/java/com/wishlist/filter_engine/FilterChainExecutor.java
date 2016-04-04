@@ -11,6 +11,7 @@ import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
 
 import com.wishlist.service.ExpediaSearchServiceImpl;
+import com.wishlist.thread.FlexThreadManager;
 import com.wishlist.util.Util;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
@@ -42,16 +43,22 @@ public class FilterChainExecutor implements Runnable {
     private void execute(){
         while (true) {
             Request request = Util.creatRequestFromRule(rule);
-            Response response = new ExpediaSearchServiceImpl().execute(request);
-            Map legMap = Util.mapLegs(response);
+            SlimResponse slimResponse = null;
+            if (rule.getFlex()){
+                slimResponse = new FlexThreadManager().getFlexResponses(request);
+            } else {
+                Response response = new ExpediaSearchServiceImpl().execute(request);
+                slimResponse = new SlimConverter().createSlimResponse(response);
+            }
+            log.info(WishListMessage.createSubject(rule)+
+                    " search results before operating filter engine : "+slimResponse.getSearchResultList().size()+"\n");
 
-            SlimResponse slimResponse = new SlimConverter().createSlimResponse(response, legMap);
             FilterChainEngine filterChainEngine = new FilterChainEngine();
             slimResponse = filterChainEngine.processCritera(slimResponse, rule.getFilters());
 
             if (slimResponse.getSearchResultList().size()>0){
                 new Email().sendMail(slimResponse, rule);
-                log.info(new WishListMessage().createMessage(rule,slimResponse));
+                log.info(WishListMessage.createMessage(rule,slimResponse));
             }
 
             doLogging(slimResponse);
@@ -69,7 +76,7 @@ public class FilterChainExecutor implements Runnable {
     }
 
     private void doLogging(SlimResponse slimResponse) {
-        log.info(Util.createSubject(rule));
+        log.info(WishListMessage.createSubject(rule));
         log.info("total search results after rule engine processing: " + slimResponse.getSearchResultList().size());
         StringBuffer sb = new StringBuffer();
         for (SearchResult searchResult : slimResponse.getSearchResultList()){

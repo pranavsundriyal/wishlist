@@ -10,15 +10,16 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.concurrent.Callable;
+
 @Service("expedia")
-public class ExpediaSearchServiceImpl {
+public class ExpediaSearchServiceImpl implements Callable {
 
 
     private static String API = "https://www.expedia.com/api/flight/search";
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-
-
+    private Request request;
     private Response repsonse;
 
     /*
@@ -26,6 +27,9 @@ public class ExpediaSearchServiceImpl {
     public ExpediaSearchServiceImpl() {
     }
 
+    public ExpediaSearchServiceImpl(Request request) {
+        this.request = request;
+    }
 
 
     @Cacheable(value = "results", cacheManager = "springCM")
@@ -61,5 +65,10 @@ public class ExpediaSearchServiceImpl {
 
     public void setRepsonse(Response repsonse) {
         this.repsonse = repsonse;
+    }
+
+    @Override
+    public Response call() throws Exception {
+        return execute(request);
     }
 }

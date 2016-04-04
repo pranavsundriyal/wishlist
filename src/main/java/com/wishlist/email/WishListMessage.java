@@ -11,10 +11,6 @@ import org.springframework.stereotype.Component;
 
 /**
  * Created by psundriyal on 3/23/16.
- * format for url
- * https://www.expedia.com/Flights-Search?trip=roundtrip&leg1=from:CHI,to:BOM,departure:08/26/2016TANYT&leg2=from:BOM,to:CHI,departure:09/11/2016TANYT&passengers=adults:2&mode=search
-
- trip=oneway
  */
 
 @Component
@@ -22,13 +18,13 @@ public class WishListMessage {
 
     private static String URL = "https://www.expedia.com/Flights-Search?";
 
-    public String createMessage(Rule rule, SlimResponse response){
+    public static String createMessage(Rule rule, SlimResponse response){
 
         StringBuffer sb = new StringBuffer();
 
         sb.append("\nFor Trip\n");
 
-        sb.append(Util.createSubject(rule));
+        sb.append(createSubject(rule));
         sb.append("\n\n");
 
         sb.append("Filters : No. of Search Results\n");
@@ -39,7 +35,7 @@ public class WishListMessage {
 
         sb.append("\nTop results found for the above Filters\n");
         sb.append("url : "+createURL(rule)+"\n");
-        sb.append("\n No. of results found: " +response.getSearchResultList().size());
+        sb.append("\n No. of results found: " +response.getSearchResultList().size() + " showing top 10 or less");
         int noResults=10;
         if (response.getSearchResultList().size() < 10) {
             noResults = response.getSearchResultList().size();
@@ -64,7 +60,18 @@ public class WishListMessage {
         return sb.toString();
     }
 
-    public String createURL(Rule rule){
+    public static String createSubject(Rule rule){
+        StringBuffer sb = new StringBuffer();
+        sb.append(rule.getOrigin()).append("-").append(rule.getDestination()).append("/")
+                .append(rule.getDeparturteDate()).append("/").append(rule.getArrivalDate());
+        if (rule.getFlex()){
+            sb.append("/FLEX");
+        }
+        sb.append("\n");
+        return sb.toString();
+    }
+
+    public static String createURL(Rule rule){
 
         StringBuffer sb = new StringBuffer(URL);
         if (rule.getArrivalDate() != null){
@@ -73,13 +80,9 @@ public class WishListMessage {
             sb.append("trip=oneway");
         }
 
-        /*&leg1=from:CHI,to:BOM,departure:08/26/2016TANYT*/
-
         sb.append("&leg1=from:"+rule.getOrigin()
                 +",to:"+rule.getDestination()
                 +",departure:"+formatDate(rule.getDeparturteDate())+"TANYT");
-
-        /*&leg2=from:BOM,to:CHI,departure:09/11/2016TANYT&passengers=adults:2&mode=search*/
 
         if (rule.getArrivalDate() != null){
             sb.append("&leg2=from:"+rule.getDestination()
@@ -91,7 +94,7 @@ public class WishListMessage {
         return sb.toString();
     }
 
-    public String formatDate(String date) {
+    public static String formatDate(String date) {
         String s= date.replace('-','/');
         return s.substring(5)+"/"+s.substring(0,4);
     }

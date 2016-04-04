@@ -7,11 +7,15 @@ import com.wishlist.model.Segment;
 import com.wishlist.model.rule.Rule;
 import org.springframework.format.annotation.DateTimeFormat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -116,12 +120,20 @@ public class Util {
         return request;
     }
 
-    public static String createSubject(Rule rule){
-        StringBuffer sb = new StringBuffer();
-        sb.append(rule.getOrigin()).append("-").append(rule.getDestination()).append("/")
-                .append(rule.getDeparturteDate()).append("/").append(rule.getArrivalDate()).append("\n");
+    public static String addDate(String dateString, int noDays) {
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = formatter.parse(dateString);
+        } catch (ParseException pe){
+            pe.printStackTrace();
+        }
+        Calendar c = Calendar.getInstance();
+        c.setTime(date);
+        c.add(Calendar.DATE, noDays);
 
-        return sb.toString();
+        return formatter.format(c.getTime());
     }
+
 
 }
