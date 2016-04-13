@@ -1,0 +1,48 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> Wishlist</title>
+    <script src="jquery.js"></script>
+
+    <script type="text/javascript">
+     $(document).ready(function() {
+         $("button").click(function () {
+             $.ajax({
+                 type: "GET",
+                 url: "searchExp",
+                 data: {
+                     origin: $("#origin").val(),
+                     dest: $("#dest").val(),
+                     departure: $("#departure").val(),
+                     arrival: $("#arrival").val(),
+                 },
+                 success: function (data) {
+                     $("#results").html("<div>" + data + "</div> ");
+                 },
+                 error: function(data) {
+                     //Do Something to handle error
+                 }
+             });
+         });
+     });
+
+
+    </script>
+</head>
+<body>
+
+    Origin<br>
+    <input type="text" id="origin" value="CHI"><br>
+    Destination:<br>
+    <input type="text" id="dest" value="SEA"><br><br>
+    Departure<br>
+    <input type="text" id="departure" value="2016-04-20"><br>
+    Arrival:<br>
+    <input type="text" id="arrival" value="2016-05-02"><br><br>
+    <button type="button" >Search</button>
+
+    <div id="results">
+
+    </div>
+</body>
+</html>
