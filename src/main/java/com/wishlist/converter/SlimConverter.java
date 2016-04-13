@@ -10,19 +10,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Component
+
 public class SlimConverter {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
     public SlimResponse createSlimResponse(Response response) {
 
-        Map<String, Leg> legMap = Util.mapLegs(response);
+        Map<String, Leg> legMap = mapLegs(response);
 
         SlimResponse slimResponse = new SlimResponse();
 
@@ -44,4 +46,21 @@ public class SlimConverter {
         log.info("Total search results : "+slimResponse.getSearchResultList().size());
         return slimResponse;
     }
+
+
+    public static Map<String, Leg> mapLegs(Response response){
+
+        Map<String, Leg> legMap = new HashMap<>();
+        for (Leg leg :response.getLegs()) {
+            LocalDateTime departureTime = Util.parseLocalDateTime(leg.getSegments().get(0).getDepartureTimeRaw());
+            LocalDateTime arrivalTime = Util.parseLocalDateTime(leg.getSegments().get(leg.getSegments().size()-1).
+                    getArrivalTimeRaw());
+            leg.setArrivalTime(arrivalTime);
+            leg.setDepartureTime(departureTime);
+            Util.calculateLegDuration(leg);
+            legMap.put(leg.getLegId(), leg);
+        }
+        return legMap;
+    }
+
 }

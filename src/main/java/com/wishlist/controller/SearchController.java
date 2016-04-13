@@ -1,5 +1,6 @@
 package com.wishlist.controller;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import com.wishlist.converter.SlimConverter;
 import com.wishlist.filter_engine.FilterChainHelper;
 import com.wishlist.model.Request;
@@ -10,6 +11,7 @@ import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.ThreadManager;
 import com.wishlist.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -60,6 +62,10 @@ public class SearchController {
     }
 
 
-
+    @RequestMapping(value = "/")
+    public Model greeting(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+        model.addAttribute("name", name);
+        return model;
+    }
 
 }

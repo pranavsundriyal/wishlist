@@ -28,27 +28,6 @@ public class Util {
 
     private static Logger log = Logger.getLogger(Util.class.getName());
 
-
-    public static Map<String, Leg> mapLegs(Response response){
-
-        Map<String, Leg> legMap = new HashMap<>();
-
-
-        for (Leg leg :response.getLegs()) {
-            LocalDateTime departureTime = parseLocalDateTime(leg.getSegments().get(0).getDepartureTimeRaw());
-            LocalDateTime arrivalTime = parseLocalDateTime(leg.getSegments().get(leg.getSegments().size()-1).
-                    getArrivalTimeRaw());
-            leg.setArrivalTime(arrivalTime);
-            leg.setDepartureTime(departureTime);
-            calculateLegDuration(leg);
-            legMap.put(leg.getLegId(), leg);
-        }
-
-        return legMap;
-    }
-
-
-
     public static Leg calculateLegDuration(Leg leg) {
 
 

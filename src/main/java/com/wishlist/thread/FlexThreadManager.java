@@ -1,5 +1,6 @@
 package com.wishlist.thread;
 
+import com.wishlist.converter.PriceSort;
 import com.wishlist.converter.SlimConverter;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
@@ -8,6 +9,7 @@ import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.util.Util;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -60,6 +62,9 @@ public class FlexThreadManager {
             SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
             aggregateResponse.getSearchResultList().addAll(slimResponse.getSearchResultList());
         }
+
+        PriceSort priceSort = new PriceSort();
+        Collections.sort(aggregateResponse.getSearchResultList(), priceSort);
         return aggregateResponse;
     }
 

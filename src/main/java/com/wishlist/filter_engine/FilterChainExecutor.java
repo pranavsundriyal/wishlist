@@ -57,11 +57,10 @@ public class FilterChainExecutor implements Runnable {
             slimResponse = filterChainEngine.processCritera(slimResponse, rule.getFilters());
 
             if (slimResponse.getSearchResultList().size()>0){
-                new Email().sendMail(slimResponse, rule);
-                log.info(WishListMessage.createMessage(rule,slimResponse));
+                //new Email().sendMail(slimResponse, rule);
+                doLogging(slimResponse);
             }
 
-            doLogging(slimResponse);
             try {
                 TimeUnit.HOURS.sleep(24);
             } catch (InterruptedException exception) {
@@ -78,11 +77,7 @@ public class FilterChainExecutor implements Runnable {
     private void doLogging(SlimResponse slimResponse) {
         log.info(WishListMessage.createSubject(rule));
         log.info("total search results after rule engine processing: " + slimResponse.getSearchResultList().size());
-        StringBuffer sb = new StringBuffer();
-        for (SearchResult searchResult : slimResponse.getSearchResultList()){
-            sb.append(searchResult.getPrice()).append("\n");
-        }
-        log.info(sb.toString());
+        log.info(WishListMessage.createMessageAll(rule,slimResponse));
     }
 
 

@@ -9,7 +9,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "1000"
+          "lowerLimit" : "1100"
         }
       },
       {
@@ -27,7 +27,7 @@
       {
         "filterType" : "departureTime",
         "filterMap" : {
-          "hours" : "16",
+          "hours" : "18",
           "time" : "after"
         }
       },
@@ -68,7 +68,7 @@
       {
         "filterType" : "departureTime",
         "filterMap" : {
-          "hours" : "16",
+          "hours" : "18",
           "time" : "after"
         }
       }
@@ -103,7 +103,7 @@
       {
         "filterType" : "departureTime",
         "filterMap" : {
-          "hours" : "16",
+          "hours" : "18",
           "time" : "after"
         }
       }
@@ -147,7 +147,49 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "1000"
+          "lowerLimit" : "1100"
+        }
+      },
+      {
+        "filterType" : "duration",
+        "filterMap" : {
+          "hours" : "25"
+        }
+      },
+      {
+        "filterType" : "stops",
+        "filterMap" : {
+          "noStops" : "1"
+        }
+      },
+      {
+        "filterType" : "departureTime",
+        "filterMap" : {
+          "hours" : "18",
+          "time" : "after"
+        }
+      },
+      {
+        "filterType" : "airline",
+        "filterMap" : {
+          "qualifier" : "include",
+          "list" : "United"
+        }
+      }
+    ]
+  },
+  {
+    "email" : "psundriyal@expedia.com",
+    "origin" : "CHI",
+    "destination" : "BOM",
+    "departurteDate" : "2016-08-05",
+    "arrivalDate" : "2016-08-21",
+    "flex" : true,
+    "filters" : [
+      {
+        "filterType" : "price",
+        "filterMap" : {
+          "lowerLimit" : "1200"
         }
       },
       {
@@ -167,6 +209,13 @@
         "filterMap" : {
           "hours" : "16",
           "time" : "after"
+        }
+      },
+      {
+        "filterType" : "airline",
+        "filterMap" : {
+          "qualifier" : "include",
+          "list" : "United"
         }
       }
     ]
