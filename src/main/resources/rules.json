@@ -9,7 +9,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "1100"
+          "lowerLimit" : "1000"
         }
       },
       {
@@ -147,7 +147,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "1100"
+          "lowerLimit" : "1000"
         }
       },
       {
@@ -189,7 +189,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "1200"
+          "lowerLimit" : "1100"
         }
       },
       {

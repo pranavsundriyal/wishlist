@@ -57,7 +57,7 @@ public class FilterChainExecutor implements Runnable {
             slimResponse = filterChainEngine.processCritera(slimResponse, rule.getFilters());
 
             if (slimResponse.getSearchResultList().size()>0){
-                //new Email().sendMail(slimResponse, rule);
+                new Email().sendMail(slimResponse, rule);
                 doLogging(slimResponse);
             }
 
