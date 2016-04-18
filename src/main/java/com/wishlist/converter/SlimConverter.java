@@ -43,7 +43,6 @@ public class SlimConverter {
         Collections.sort(searchResults, priceSort);
         slimResponse.setSearchResultList(searchResults);
 
-        log.info("Total search results : "+slimResponse.getSearchResultList().size());
         return slimResponse;
     }
 

@@ -9,6 +9,7 @@ import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.ThreadManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,11 +23,9 @@ import java.util.logging.Logger;
  */
 
 @RestController
+@Component
 public class UIcontroller {
     private Logger log = Logger.getLogger(SearchController.class.getName());
-
-    @Autowired
-    private ExpediaSearchServiceImpl searchService;
 
     @Autowired
     private ThreadManager threadManager;
@@ -36,6 +35,9 @@ public class UIcontroller {
 
     @Autowired
     private FilterChainHelper filterChainHelper;
+
+    @Autowired
+    private ExpediaSearchServiceImpl expediaSearchService;
 
 
     @RequestMapping(value = "/searchExp", method = RequestMethod.GET)
@@ -50,7 +52,9 @@ public class UIcontroller {
         } else {
             request = new Request(arrivalDate,departureDate, origin, destination);
         }
-        Response response = searchService.execute(request);
+        long startTime = System.currentTimeMillis();
+        Response response = expediaSearchService.execute(request);
+        log.info("time taken: " + (System.currentTimeMillis()-startTime));
 
         SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
 

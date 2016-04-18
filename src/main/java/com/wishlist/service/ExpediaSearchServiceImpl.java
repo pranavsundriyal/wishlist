@@ -5,20 +5,23 @@ import com.wishlist.model.Response;
 import com.wishlist.model.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
 
-@Service("expedia")
-public class ExpediaSearchServiceImpl implements Callable {
+@Component
+public class ExpediaSearchServiceImpl implements Callable,SearchService {
 
 
     private static String API = "https://www.expedia.com/api/flight/search";
     private final Logger log = LoggerFactory.getLogger(this.getClass());
-
     private Request request;
     private Response repsonse;
 
@@ -31,8 +34,8 @@ public class ExpediaSearchServiceImpl implements Callable {
         this.request = request;
     }
 
-
-    @Cacheable(value = "results", cacheManager = "springCM")
+    @Override
+  //  @Cacheable(value = "responses", key = "#request.toString()")
     public Response execute(Request request) {
         String url = API + getParams(request);
         RestTemplate restTemplate = new RestTemplate();

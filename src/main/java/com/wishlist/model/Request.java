@@ -79,4 +79,15 @@ public class Request implements Cloneable {
     public void setMaxOffer(int maxOffer) {
         this.maxOffer = maxOffer;
     }
+
+    @Override
+    public String toString() {
+        return "Request{" +
+                "arrivalDate='" + arrivalDate + '\'' +
+                ", departurteDate='" + departurteDate + '\'' +
+                ", origin='" + origin + '\'' +
+                ", destination='" + destination + '\'' +
+                ", maxOffer=" + maxOffer +
+                '}';
+    }
 }

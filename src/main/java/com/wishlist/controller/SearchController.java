@@ -9,6 +9,7 @@ import com.wishlist.filter_engine.FilterChainEngine;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.ThreadManager;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,12 +17,10 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @RestController
+@Component
 public class SearchController {
 
     private Logger log = Logger.getLogger(SearchController.class.getName());
-
-    @Autowired
-    private ExpediaSearchServiceImpl searchService;
 
     @Autowired
     private ThreadManager threadManager;
@@ -31,6 +30,9 @@ public class SearchController {
 
     @Autowired
     private FilterChainHelper filterChainHelper;
+
+    @Autowired
+    private ExpediaSearchServiceImpl expediaSearchService;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
 	public SlimResponse search(@RequestParam(value="origin", required=true) String origin,
@@ -44,7 +46,7 @@ public class SearchController {
         } else {
              request = new Request(arrivalDate,departureDate, origin, destination);
         }
-        Response response = searchService.execute(request);
+        Response response = expediaSearchService.execute(request);
 
         SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
 

@@ -36,16 +36,12 @@ public class Leg {
         @JsonIgnore
         private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
-        @JsonIgnore
         private LocalDateTime arrivalTime;
 
-        @JsonIgnore
         private LocalDateTime departureTime;
 
-        @JsonIgnore
         private LocalTime duration;
 
-        @JsonIgnore
         private LocalTime layover;
         /**
          *

@@ -4,6 +4,7 @@ import com.wishlist.controller.SearchController;
 import com.wishlist.converter.SlimConverter;
 import com.wishlist.email.Email;
 import com.wishlist.email.WishListMessage;
+import com.wishlist.filter_engine.FilterChainEngine;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.rule.Rule;
@@ -13,6 +14,7 @@ import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.FlexThreadManager;
 import com.wishlist.util.Util;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Component;
 
@@ -26,11 +28,12 @@ import java.util.logging.Logger;
 
 
 @Component
-@Configurable
 public class FilterChainExecutor implements Runnable {
 
 
     private Rule rule;
+    @Autowired
+    private ExpediaSearchServiceImpl expediaSearchService;
 
     public FilterChainExecutor(Rule rule){
         this.rule= rule;
@@ -47,7 +50,7 @@ public class FilterChainExecutor implements Runnable {
             if (rule.getFlex()){
                 slimResponse = new FlexThreadManager().getFlexResponses(request);
             } else {
-                Response response = new ExpediaSearchServiceImpl().execute(request);
+                Response response = expediaSearchService.execute(request);
                 slimResponse = new SlimConverter().createSlimResponse(response);
             }
             log.info(WishListMessage.createSubject(rule)+

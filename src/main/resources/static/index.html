@@ -3,8 +3,8 @@
     <meta charset="UTF-8">
     <title> Wishlist</title>
     <script src="jquery.js"></script>
-
     <script type="text/javascript">
+
      $(document).ready(function() {
          $("button").click(function () {
              $.ajax({
@@ -17,7 +17,25 @@
                      arrival: $("#arrival").val(),
                  },
                  success: function (data) {
-                     $("#results").html("<div>" + data + "</div> ");
+                     $("#results").empty();
+                     for(var i=0; i<data.searchResultList.length; i++){
+                         $("#results").append('<div>Price :' + data.searchResultList[i].price + '</br>');
+                         for (var j=0; j<data.searchResultList[i].legList.length; j++) {
+                             var leg = data.searchResultList[i].legList[j];
+                             $("#results").append('Departure Time : ' +getDateTime(leg.departureTime)
+                                     +' | Arrival Time: '+getDateTime(leg.arrivalTime)+ '<br>');
+                             $("#results").append('Duration: '+getTime(leg.duration)+' | Layover: '+getTime(leg.layover)
+                                     + '<br>');
+                             for (var k=0; k<leg.segments.length; k++){
+                                 segment = leg.segments[k];
+                                 $("#results").append(segment.departureAirportLocation+'('+segment.departureAirportCode+') -> '
+                                         + segment.arrivalAirportLocation +'('+segment.arrivalAirportCode+')  | Flight No: '
+                                         +segment.airlineName+ ' '+segment.flightNumber+'<br>');
+                             }
+                             $("#results").append('<br>');
+                         }
+                         $("#results").append('<br><br></div>');
+                     }
                  },
                  error: function(data) {
                      //Do Something to handle error
@@ -26,7 +44,13 @@
          });
      });
 
+    function getTime(time) {
+        return time.hour+' hr ' + time.minute + ' min'
+    }
 
+    function getDateTime(dateTime) {
+        return +dateTime.dayOfMonth+' '+dateTime.month+' '+dateTime.hour+':'+dateTime.minute
+    }
     </script>
 </head>
 <body>
