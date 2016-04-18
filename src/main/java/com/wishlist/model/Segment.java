@@ -1,6 +1,8 @@
 package com.wishlist.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -42,7 +44,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "providerCode"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Segment {
+public class Segment implements Serializable{
 
     @JsonProperty("departureTime")
     private String departureTime;

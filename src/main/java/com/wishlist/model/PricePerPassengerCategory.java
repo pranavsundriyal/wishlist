@@ -1,5 +1,6 @@
 package com.wishlist.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -11,7 +12,7 @@ import com.fasterxml.jackson.annotation.*;
 @JsonPropertyOrder({
         "passengerCategory"
 })@JsonIgnoreProperties(ignoreUnknown = true)
-public class PricePerPassengerCategory {
+public class PricePerPassengerCategory implements Serializable{
 
     @JsonProperty("passengerCategory")
     private String passengerCategory;

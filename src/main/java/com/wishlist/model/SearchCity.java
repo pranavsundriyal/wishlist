@@ -1,5 +1,6 @@
 package com.wishlist.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -16,7 +17,7 @@ import com.fasterxml.jackson.annotation.*;
         "searchType"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SearchCity {
+public class SearchCity implements Serializable{
 
     @JsonProperty("code")
     private String code;

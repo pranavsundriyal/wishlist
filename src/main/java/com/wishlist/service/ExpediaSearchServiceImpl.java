@@ -3,20 +3,18 @@ package com.wishlist.service;
 
 import com.wishlist.model.Response;
 import com.wishlist.model.Request;
+import net.sf.ehcache.Cache;
+import net.sf.ehcache.CacheManager;
+import net.sf.ehcache.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.cache.CacheManager;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
 
-@Component
+@Service
 public class ExpediaSearchServiceImpl implements Callable,SearchService {
 
 
@@ -25,6 +23,8 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
     private Request request;
     private Response repsonse;
 
+    @Autowired
+    private CacheManager cacheManager;
     /*
     * Need this constructor for caching*/
     public ExpediaSearchServiceImpl() {
@@ -34,12 +34,20 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
         this.request = request;
     }
 
-    @Override
-  //  @Cacheable(value = "responses", key = "#request.toString()")
     public Response execute(Request request) {
-        String url = API + getParams(request);
-        RestTemplate restTemplate = new RestTemplate();
-         Response response = restTemplate.getForObject(url, Response.class);
+        Cache cache = cacheManager.getCache("cache");
+        Response response = null;
+        Element elementResponse = cache.get(request.toString());
+        if (elementResponse == null) {
+
+            String url = API + getParams(request);
+            RestTemplate restTemplate = new RestTemplate();
+            response = restTemplate.getForObject(url, Response.class);
+            Element element = new Element(request.toString(), response);
+            cache.put(element);
+        } else {
+            response = (Response) elementResponse.getObjectValue();
+        }
         return response;
     }
 

@@ -7,6 +7,7 @@
 
      $(document).ready(function() {
          $("button").click(function () {
+             var filters = '[{"filterType" : "price","filterMap" : {"lowerLimit" : "'+$("#price").val()+'"}}]';
              $.ajax({
                  type: "GET",
                  url: "searchExp",
@@ -15,6 +16,7 @@
                      dest: $("#dest").val(),
                      departure: $("#departure").val(),
                      arrival: $("#arrival").val(),
+                     filters: filters
                  },
                  success: function (data) {
                      $("#results").empty();
@@ -60,9 +62,12 @@
     Destination:<br>
     <input type="text" id="dest" value="SEA"><br><br>
     Departure<br>
-    <input type="text" id="departure" value="2016-04-20"><br>
+    <input type="text" id="departure" value="2016-07-20"><br>
     Arrival:<br>
-    <input type="text" id="arrival" value="2016-05-02"><br><br>
+    <input type="text" id="arrival" value="2016-08-02"><br>
+    Price:<br>
+    <input type="text" id="price" value="1100"><br>
+    <br>
     <button type="button" >Search</button>
 
     <div id="results">

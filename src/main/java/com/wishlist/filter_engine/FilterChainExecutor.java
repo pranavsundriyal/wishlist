@@ -32,8 +32,6 @@ public class FilterChainExecutor implements Runnable {
 
 
     private Rule rule;
-    @Autowired
-    private ExpediaSearchServiceImpl expediaSearchService;
 
     public FilterChainExecutor(Rule rule){
         this.rule= rule;
@@ -50,7 +48,7 @@ public class FilterChainExecutor implements Runnable {
             if (rule.getFlex()){
                 slimResponse = new FlexThreadManager().getFlexResponses(request);
             } else {
-                Response response = expediaSearchService.execute(request);
+                Response response = new ExpediaSearchServiceImpl().execute(request);
                 slimResponse = new SlimConverter().createSlimResponse(response);
             }
             log.info(WishListMessage.createSubject(rule)+

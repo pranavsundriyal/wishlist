@@ -2,6 +2,7 @@ package com.wishlist.model;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -12,7 +13,7 @@ import java.util.Map;
  */
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Response {
+public class Response implements Serializable{
 
     @JsonProperty("legs")
     private List<Leg> legs = new ArrayList<Leg>();

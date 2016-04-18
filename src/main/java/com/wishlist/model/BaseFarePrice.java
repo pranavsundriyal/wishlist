@@ -1,4 +1,5 @@
 package com.wishlist.model;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -13,7 +14,7 @@ import com.fasterxml.jackson.annotation.*;
         "formattedWholePrice"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class BaseFarePrice {
+public class BaseFarePrice implements Serializable{
 
     @JsonProperty("amount")
     private String amount;

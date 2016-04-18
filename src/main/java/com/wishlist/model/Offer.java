@@ -2,6 +2,7 @@ package com.wishlist.model;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +37,7 @@ import java.util.Map;
         "hasNoBagFee"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Offer {
+public class Offer implements Serializable{
 
     @JsonProperty("legIds")
     private List<String> legIds = new ArrayList<String>();

@@ -1,5 +1,6 @@
 package com.wishlist.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import com.fasterxml.jackson.annotation.*;
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 
-public class FreeCancellationBy {
+public class FreeCancellationBy implements Serializable{
 
     @JsonProperty("raw")
     private String raw;

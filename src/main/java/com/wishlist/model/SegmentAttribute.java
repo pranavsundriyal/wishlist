@@ -1,5 +1,6 @@
 package com.wishlist.model;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Generated;
@@ -8,7 +9,7 @@ import com.fasterxml.jackson.annotation.*;
 
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class SegmentAttribute {
+public class SegmentAttribute implements Serializable {
 
     @JsonProperty("bookingCode")
     private String bookingCode;

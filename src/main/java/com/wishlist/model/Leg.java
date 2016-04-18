@@ -2,6 +2,7 @@ package com.wishlist.model;
 
 import com.fasterxml.jackson.annotation.*;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -23,7 +24,7 @@ import java.util.Map;
             "freeCancellationBy"
     })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Leg {
+public class Leg implements Serializable{
 
         @JsonProperty("legId")
         private String legId;

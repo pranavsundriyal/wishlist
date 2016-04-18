@@ -30,7 +30,7 @@ public class FilterChainEngine {
     public SlimResponse process(SlimResponse response, List<Rule> ruleList){
 
         for (Rule rule : ruleList){
-            response=processCritera(response, rule.getFilters());
+            response = processCritera(response, rule.getFilters());
         }
         return response;
     }
