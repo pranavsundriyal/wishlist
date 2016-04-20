@@ -7,6 +7,9 @@ import com.wishlist.model.Response;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.util.Util;
+import net.sf.ehcache.CacheManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,9 +27,13 @@ import java.util.concurrent.TimeoutException;
 /**
  * Created by psundriyal on 4/3/16.
  */
+@Component
 public class FlexThreadManager {
 
     private ExecutorService executorService = Executors.newFixedThreadPool(10);
+
+    @Autowired
+    CacheManager cacheManager;
 
     public SlimResponse getFlexResponses(Request request) {
         List<Response> responses = new ArrayList<>();
@@ -35,7 +42,7 @@ public class FlexThreadManager {
 
         Set<Callable<Response>> callables = new HashSet<>();
         for (Request r : requestList) {
-             callables.add(new ExpediaSearchServiceImpl(r));
+             callables.add(new ExpediaSearchServiceImpl(r,cacheManager));
         }
 
         try {

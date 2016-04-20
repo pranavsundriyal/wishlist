@@ -23,7 +23,7 @@ public class ThreadManager {
     public int executeRules(List<Rule> ruleList){
 
         for (Rule rule: ruleList){
-            filterChainExecutor =  new FilterChainExecutor(rule);
+            filterChainExecutor.setRule(rule);
             executorService.execute(filterChainExecutor);
         }
         return ruleList.size();

@@ -7,7 +7,6 @@
 
      $(document).ready(function() {
          $("button").click(function () {
-             var filters = '[{"filterType" : "price","filterMap" : {"lowerLimit" : "'+$("#price").val()+'"}}]';
              $.ajax({
                  type: "GET",
                  url: "searchExp",
@@ -16,7 +15,8 @@
                      dest: $("#dest").val(),
                      departure: $("#departure").val(),
                      arrival: $("#arrival").val(),
-                     filters: filters
+                     flex: getFlex(),
+                     filters: getFilters()
                  },
                  success: function (data) {
                      $("#results").empty();
@@ -53,21 +53,61 @@
     function getDateTime(dateTime) {
         return +dateTime.dayOfMonth+' '+dateTime.month+' '+dateTime.hour+':'+dateTime.minute
     }
+
+    function getFilters(){
+        var filters = '['
+        if($("#price").val()!= null) {
+            var price = '{"filterType" : "price","filterMap" : {"lowerLimit" : "' + $("#price").val() + '"}}';
+            filters = filters+price;
+        }
+
+        if($("#airline").val() != null) {
+            var airline = ',{"filterType" : "airline","filterMap" : {"qualifier" : "include","list" : "'
+                    +$("#airline").val()+'"}}'
+            filters = filters+airline;
+        }
+        if($("#duration").val()!= null) {
+            var duration = ',{"filterType" : "duration","filterMap" : {"hours" : "' + $("#duration").val() + '"}}';
+            filters = filters+duration;
+        }
+
+        if($("#stops").val()!= null) {
+            var stops = ',{"filterType" : "stops","filterMap" : {"noStops" : "' + $("#stops").val() + '"}}';
+            filters = filters+stops;
+        }
+
+        if($("#departureTime").val()!= null) {
+            var departTime = ',{"filterType" : "departureTime","filterMap" : {"hours" : "' + $("#departureTime").val() +
+                    '","time" : "after"}}';
+            filters = filters+departTime;
+        }
+
+        filters = filters+']';
+
+        return filters;
+    }
+
+    function getFlex(){
+        if($('#flex').is(":checked")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     </script>
 </head>
 <body>
 
-    Origin<br>
-    <input type="text" id="origin" value="CHI"><br>
-    Destination:<br>
-    <input type="text" id="dest" value="SEA"><br><br>
-    Departure<br>
-    <input type="text" id="departure" value="2016-07-20"><br>
-    Arrival:<br>
-    <input type="text" id="arrival" value="2016-08-02"><br>
-    Price:<br>
-    <input type="text" id="price" value="1100"><br>
-    <br>
+    Origin :<br><input type="text" id="origin" value="CHI"><br>
+    Destination :<br><input type="text" id="dest" value="SEA"><br>
+    Departure :<br><input type="text" id="departure" value="2016-07-20"><br>
+    Arrival :<br><input type="text" id="arrival" value="2016-08-02"><br>
+    Price: <br><input type="text" id="price" value="1100"><br>
+    Airline : <br><input type="text" id="airline"><br>
+    Duration : <br><input type="text" id="duration"><br>
+    Stops : <br><input type="text" id="stops"><br>
+    Departure Time : <br><input type="text" id="departureTime"><br>
+    Flex <input type="checkbox" id="flex" value="flex"><br><br>
     <button type="button" >Search</button>
 
     <div id="results">

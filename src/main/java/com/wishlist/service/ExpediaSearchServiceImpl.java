@@ -9,6 +9,7 @@ import net.sf.ehcache.Element;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -30,12 +31,13 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
     public ExpediaSearchServiceImpl() {
     }
 
-    public ExpediaSearchServiceImpl(Request request) {
+    public ExpediaSearchServiceImpl(Request request, CacheManager cacheManager) {
         this.request = request;
+        this.cacheManager =cacheManager;
     }
 
     public Response execute(Request request) {
-        Cache cache = cacheManager.getCache("cache");
+        Cache cache = cacheManager.getCache("cache1");
         Response response = null;
         Element elementResponse = cache.get(request.toString());
         if (elementResponse == null) {

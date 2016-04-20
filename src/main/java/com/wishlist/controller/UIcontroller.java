@@ -11,6 +11,7 @@ import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.service.ExpediaSearchServiceImpl;
+import com.wishlist.thread.FlexThreadManager;
 import com.wishlist.thread.ThreadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,13 +46,17 @@ public class UIcontroller {
     @Autowired
     private ExpediaSearchServiceImpl expediaSearchService;
 
+    @Autowired
+    private FlexThreadManager flexThreadManager;
+
 
     @RequestMapping(value = "/searchExp", method = RequestMethod.GET)
     public SlimResponse search(@RequestParam(value="origin", required=true) String origin,
                                @RequestParam(value="dest", required=true) String destination,
                                @RequestParam(value="departure", required=true) String departureDate,
                                @RequestParam(value="arrival", required=false) String arrivalDate,
-                               @RequestParam(value = "filters", required = false) String filters) throws Exception {
+                               @RequestParam(value = "filters", required = false) String filters,
+                               @RequestParam(value = "flex", required = false) boolean flex) throws Exception {
 
         Request request;
         if (arrivalDate == null) {
@@ -61,9 +66,15 @@ public class UIcontroller {
         }
         List<Filter> filterList = getFilterList(filters);
         long startTime = System.currentTimeMillis();
-        Response response = expediaSearchService.execute(request);
+        SlimResponse slimResponse;
+        if (flex)
+            slimResponse = flexThreadManager.getFlexResponses(request);
+        else {
+            Response response = expediaSearchService.execute(request);
+            slimResponse = new SlimConverter().createSlimResponse(response);
+        }
         log.info("time taken: " + (System.currentTimeMillis()-startTime));
-        SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
+
         log.info("total search results : "+slimResponse.getSearchResultList().size());
 
         slimResponse = filterChainEngine.processCritera(slimResponse, filterList);

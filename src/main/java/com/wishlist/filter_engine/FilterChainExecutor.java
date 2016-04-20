@@ -33,22 +33,22 @@ public class FilterChainExecutor implements Runnable {
 
     private Rule rule;
 
-    public FilterChainExecutor(Rule rule){
-        this.rule= rule;
-    }
-    public FilterChainExecutor(){
-    }
+    @Autowired
+    private FlexThreadManager flexThreadManager;
+
+    @Autowired
+    private ExpediaSearchServiceImpl expediaSearchService;
 
     private Logger log = Logger.getLogger(this.getClass().getName());
 
-    private void execute(){
+    private void execute(Rule rule){
         while (true) {
             Request request = Util.creatRequestFromRule(rule);
             SlimResponse slimResponse = null;
             if (rule.getFlex()){
-                slimResponse = new FlexThreadManager().getFlexResponses(request);
+                slimResponse = flexThreadManager.getFlexResponses(request);
             } else {
-                Response response = new ExpediaSearchServiceImpl().execute(request);
+                Response response = expediaSearchService.execute(request);
                 slimResponse = new SlimConverter().createSlimResponse(response);
             }
             log.info(WishListMessage.createSubject(rule)+
@@ -58,7 +58,7 @@ public class FilterChainExecutor implements Runnable {
             slimResponse = filterChainEngine.processCritera(slimResponse, rule.getFilters());
 
             if (slimResponse.getSearchResultList().size()>0){
-                new Email().sendMail(slimResponse, rule);
+                //new Email().sendMail(slimResponse, rule);
                 doLogging(slimResponse);
             }
 
@@ -71,7 +71,7 @@ public class FilterChainExecutor implements Runnable {
 
     @Override
     public void run() {
-        execute();
+        execute(this.rule);
         log.info("Thread executed successfully");
     }
 
@@ -81,5 +81,7 @@ public class FilterChainExecutor implements Runnable {
         log.info(WishListMessage.createMessageAll(rule,slimResponse));
     }
 
-
+    public void setRule(Rule rule) {
+        this.rule = rule;
+    }
 }
