@@ -1,6 +1,7 @@
 package com.wishlist.model;
 
 import com.fasterxml.jackson.annotation.*;
+import com.wishlist.model.slim.Time;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -44,6 +45,8 @@ public class Leg implements Serializable{
         private LocalTime duration;
 
         private LocalTime layover;
+
+        private Time totalDuration;
         /**
          *
          * @return
@@ -165,5 +168,13 @@ public class Leg implements Serializable{
 
         public void setLayover(LocalTime layover) {
                 this.layover = layover;
+        }
+
+        public Time getTotalDuration() {
+                return totalDuration;
+        }
+
+        public void setTotalDuration(Time totalDuration) {
+                this.totalDuration = totalDuration;
         }
 }

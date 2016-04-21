@@ -57,6 +57,7 @@ public class SlimConverter {
             leg.setArrivalTime(arrivalTime);
             leg.setDepartureTime(departureTime);
             Util.calculateLegDuration(leg);
+            leg.setTotalDuration(Util.addLocalTimes(leg.getDuration(),leg.getLayover()));
             legMap.put(leg.getLegId(), leg);
         }
         return legMap;

@@ -5,6 +5,7 @@ import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.Segment;
 import com.wishlist.model.rule.Rule;
+import com.wishlist.model.slim.Time;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.text.ParseException;
@@ -20,9 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
-/**
- * Created by psundriyal on 3/22/16.
- */
+
 public class Util {
 
 
@@ -83,9 +82,20 @@ public class Util {
 
     public static LocalTime addLocalTime(LocalTime t1, LocalTime t2){
 
-        t2 = t2.plusMinutes(new Long(t1.getMinute()));
-        t2 = t2.plusHours(new Long(t1.getHour()));
-        return t2;
+        int m = t1.getMinute() + t2.getMinute();
+        int h = m/60;
+        int min = m%60;
+        int hour = t1.getHour() + t2.getHour() + h;
+        return LocalTime.of(hour,min,0,0);
+    }
+
+    public static Time addLocalTimes(LocalTime t1, LocalTime t2){
+
+        int m = t1.getMinute() + t2.getMinute();
+        int h = m/60;
+        int min = m%60;
+        int hour = t1.getHour() + t2.getHour() + h;
+        return new Time(hour,min);
     }
 
     public static Request creatRequestFromRule(Rule rule){
@@ -118,4 +128,5 @@ public class Util {
     public static float getMinutes(int hours, int minutes) {
         return hours*60+minutes;
     }
+
 }

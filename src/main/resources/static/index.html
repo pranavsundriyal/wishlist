@@ -26,7 +26,7 @@
                              var leg = data.searchResultList[i].legList[j];
                              $("#results").append('Departure Time : ' +getDateTime(leg.departureTime)
                                      +' | Arrival Time: '+getDateTime(leg.arrivalTime)+ '<br>');
-                             $("#results").append('Duration: '+getTime(leg.duration)+' | Layover: '+getTime(leg.layover)
+                             $("#results").append('Duration: '+getTime(leg.totalDuration)+' | Layover: '+getTime(leg.layover)
                                      + '<br>');
                              for (var k=0; k<leg.segments.length; k++){
                                  segment = leg.segments[k];
@@ -47,11 +47,12 @@
      });
 
     function getTime(time) {
-        return time.hour+' hr ' + time.minute + ' min'
+        return time.hour+' hr: ' + time.minute + ' min'
     }
 
+
     function getDateTime(dateTime) {
-        return +dateTime.dayOfMonth+' '+dateTime.month+' '+dateTime.hour+':'+dateTime.minute
+        return +dateTime.dayOfMonth+' '+dateTime.month+' '+dateTime.hour+' hr:'+dateTime.minute+' min'
     }
 
     function getFilters(){
