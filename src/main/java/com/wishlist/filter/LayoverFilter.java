@@ -3,6 +3,7 @@ package com.wishlist.filter;
 import com.wishlist.model.Leg;
 import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
+import com.wishlist.util.Util;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,8 @@ public class LayoverFilter implements Filter {
             for (SearchResult searchResult : slimResponse.getSearchResultList()) {
                 boolean flag = true;
                 for (Leg leg : searchResult.getLegList()) {
-                    if (leg.getLayover().getHour() > Integer.parseInt(criteriaMap.get(HOURS))){
+                    if (Util.getMinutes(leg.getLayover().getHour(),leg.getLayover().getMinute()) >
+                            Integer.parseInt(criteriaMap.get(HOURS))*60){
                         flag=false;
                     }
                 }

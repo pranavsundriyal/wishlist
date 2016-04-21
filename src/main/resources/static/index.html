@@ -1,7 +1,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title> Wishlist</title>
+    <title> WishList</title>
     <script src="jquery.js"></script>
     <script type="text/javascript">
 
@@ -15,7 +15,7 @@
                      dest: $("#dest").val(),
                      departure: $("#departure").val(),
                      arrival: $("#arrival").val(),
-                     flex: getFlex(),
+                     flex: $('#flex').is(":checked"),
                      filters: getFilters()
                  },
                  success: function (data) {
@@ -55,44 +55,51 @@
     }
 
     function getFilters(){
+        var comma= ',';
         var filters = '['
-        if($("#price").val()!= null) {
+        if($("#price").val().length > 0) {
             var price = '{"filterType" : "price","filterMap" : {"lowerLimit" : "' + $("#price").val() + '"}}';
             filters = filters+price;
         }
-
-        if($("#airline").val() != null) {
-            var airline = ',{"filterType" : "airline","filterMap" : {"qualifier" : "include","list" : "'
-                    +$("#airline").val()+'"}}'
+        if($("#airline").val().length > 0) {
+            var airline = ',{"filterType" : "airline","filterMap" : {"qualifier" : "'+
+                    $("input:radio[name=airline]:checked").val() +'","list" : "' +$("#airline").val()+'"}}'
             filters = filters+airline;
         }
-        if($("#duration").val()!= null) {
+        if($("#connection").val().length > 0) {
+            var airline = ',{"filterType" : "connectionStop","filterMap" : {"qualifier" : "'+
+                    $("input:radio[name=connection]:checked").val()+'","list" : "' +$("#connection").val()+'"}}'
+            filters = filters+airline;
+        }
+        if($("#duration").val().length > 0) {
             var duration = ',{"filterType" : "duration","filterMap" : {"hours" : "' + $("#duration").val() + '"}}';
             filters = filters+duration;
         }
 
-        if($("#stops").val()!= null) {
+        if($("#layover").val().length > 0) {
+            var duration = ',{"filterType" : "layover","filterMap" : {"hours" : "' + $("#layover").val() + '"}}';
+            filters = filters+duration;
+        }
+
+        if($("#stops").val().length > 0) {
             var stops = ',{"filterType" : "stops","filterMap" : {"noStops" : "' + $("#stops").val() + '"}}';
             filters = filters+stops;
         }
 
-        if($("#departureTime").val()!= null) {
+        if($("#departureTime").val().length > 0) {
             var departTime = ',{"filterType" : "departureTime","filterMap" : {"hours" : "' + $("#departureTime").val() +
-                    '","time" : "after"}}';
+                    '","time" : "' + $("input:radio[name=departTime]:checked").val() + '"}}';
             filters = filters+departTime;
         }
 
+        if($("#arrivalTime").val().length > 0) {
+            var departTime = ',{"filterType" : "arrivalTime","filterMap" : {"hours" : "' + $("#arrivalTime").val() +
+                    '","time" : "' + $("input:radio[name=arrivalTime]:checked").val() + '"}}';
+            filters = filters+departTime;
+        }
         filters = filters+']';
 
         return filters;
-    }
-
-    function getFlex(){
-        if($('#flex').is(":checked")) {
-            return true;
-        } else {
-            return false;
-        }
     }
     </script>
 </head>
@@ -103,10 +110,13 @@
     Departure :<br><input type="text" id="departure" value="2016-07-20"><br>
     Arrival :<br><input type="text" id="arrival" value="2016-08-02"><br>
     Price: <br><input type="text" id="price" value="1100"><br>
-    Airline : <br><input type="text" id="airline"><br>
+    Airline : <br><input type="text" id="airline">    include<input type="radio" name="airline" value="include">    exclude<input type="radio" name="airline" value="exclude"><br>
+    Connection Stops : <br><input type="text" id="connection">    include<input type="radio" name="connection" value="include">    exclude<input type="radio" name="connection" value="exclude"><br>
     Duration : <br><input type="text" id="duration"><br>
+    Layover : <br><input type="text" id="layover"><br>
     Stops : <br><input type="text" id="stops"><br>
-    Departure Time : <br><input type="text" id="departureTime"><br>
+    Departure Time : <br><input type="text" id="departureTime">    before<input type="radio" name="departTime" value="before">    after<input type="radio" name="departTime" value="after"><br>
+    Arrival Time : <br><input type="text" id="arrivalTime">    before<input type="radio" name="arrivalTime" value="before">    after<input type="radio" name="arrivalTime" value="after"><br>
     Flex <input type="checkbox" id="flex" value="flex"><br><br>
     <button type="button" >Search</button>
 

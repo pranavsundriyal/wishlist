@@ -115,4 +115,7 @@ public class Util {
     }
 
 
+    public static float getMinutes(int hours, int minutes) {
+        return hours*60+minutes;
+    }
 }
