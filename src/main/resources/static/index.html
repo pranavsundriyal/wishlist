@@ -6,7 +6,7 @@
     <script type="text/javascript">
 
      $(document).ready(function() {
-         $("button").click(function () {
+         $("#search").click(function () {
              $.ajax({
                  type: "GET",
                  url: "searchExp",
@@ -43,6 +43,52 @@
                      //Do Something to handle error
                  }
              });
+         });
+     });
+
+     $(document).ready(function() {
+         $("#save").click(function () {
+             if ($("#email").val().length > 0) {
+                 $.ajax({
+                     type: "GET",
+                     url: "save",
+                     data: {
+                         origin: $("#origin").val(),
+                         dest: $("#dest").val(),
+                         departure: $("#departure").val(),
+                         arrival: $("#arrival").val(),
+                         flex: $('#flex').is(":checked"),
+                         filters: getFilters(),
+                         email: $("#email").val()
+                     },
+                     success: function (data) {
+                         $('#saved').empty();
+                         if (data) {
+                             $("#saved").append('<br>Sucessfully subscribed<br>');
+                         } else {
+                             $("#saved").append('<br>error while subscribing<br>');
+                         }
+                     }
+                 });
+             }
+         });
+     });
+
+     $(document).ready(function() {
+         $("#lookup").click(function () {
+             if ($("#email").val().length >0) {
+                 $.ajax({
+                     type: "GET",
+                     url: "lookup",
+                     data: {
+                         email: $("#email").val()
+                     },
+                     success: function (data) {
+                         $('#rules').empty();
+                         $("#rules").append(data);
+                     }
+                 });
+             }
          });
      });
 
@@ -105,7 +151,7 @@
     </script>
 </head>
 <body>
-
+    <div>
     Origin :<br><input type="text" id="origin" value="CHI"><br>
     Destination :<br><input type="text" id="dest" value="SEA"><br>
     Departure :<br><input type="text" id="departure" value="2016-07-20"><br>
@@ -119,10 +165,15 @@
     Departure Time : <br><input type="text" id="departureTime">    before<input type="radio" name="departTime" value="before">    after<input type="radio" name="departTime" value="after"><br>
     Arrival Time : <br><input type="text" id="arrivalTime">    before<input type="radio" name="arrivalTime" value="before">    after<input type="radio" name="arrivalTime" value="after"><br>
     Flex <input type="checkbox" id="flex" value="flex"><br><br>
-    <button type="button" >Search</button>
-
-    <div id="results">
-
+    <button id="search" type="button" >Search</button><br><br>
+    Email : <br><input type="text" id="email"><br><br>
+    <button id="save" type="button" >Subscribe       </button>
+    <button id="lookup" type="button" >Look Up</button><br><br>
     </div>
+
+    <div id="rules"></div><br><br>
+    <div id="saved"></div><br><br>
+    <div id="results"></div><br><br>
+
 </body>
 </html>

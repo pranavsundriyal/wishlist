@@ -4,7 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wishlist.converter.SlimConverter;
 import com.wishlist.filter_engine.FilterChainEngine;
-import com.wishlist.filter_engine.FilterChainHelper;
+import com.wishlist.filter_engine.FileManager;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.rule.Filter;
@@ -15,7 +15,6 @@ import com.wishlist.thread.FlexThreadManager;
 import com.wishlist.thread.ThreadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -41,7 +40,7 @@ public class UIcontroller {
     private FilterChainEngine filterChainEngine;
 
     @Autowired
-    private FilterChainHelper filterChainHelper;
+    private FileManager fileManager;
 
     @Autowired
     private ExpediaSearchServiceImpl expediaSearchService;
@@ -81,6 +80,28 @@ public class UIcontroller {
 
         return slimResponse;
 
+    }
+
+
+    @RequestMapping(value = "/save", method = RequestMethod.GET)
+    public Boolean save(@RequestParam(value="origin", required=true) String origin,
+                               @RequestParam(value="dest", required=true) String destination,
+                               @RequestParam(value="departure", required=true) String departureDate,
+                               @RequestParam(value="arrival", required=false) String arrivalDate,
+                               @RequestParam(value = "filters", required = false) String filters,
+                               @RequestParam(value = "flex", required = false) boolean flex,
+                                @RequestParam(value="email", required=false) String email) throws Exception {
+
+        List<Filter> filterList = getFilterList(filters);
+        Rule rule = new Rule();
+        rule.setEmail(email);
+        rule.setOrigin(origin);
+        rule.setDestination(destination);
+        rule.setArrivalDate(arrivalDate);
+        rule.setDeparturteDate(departureDate);
+        rule.setFlex(flex);
+        rule.setFilters(filterList);
+        return fileManager.saveRule(rule);
     }
 
     public List<Filter> getFilterList(String filters){

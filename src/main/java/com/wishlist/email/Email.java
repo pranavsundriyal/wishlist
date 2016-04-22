@@ -3,17 +3,22 @@ package com.wishlist.email;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.util.Util;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import javax.mail.*;
 import javax.mail.internet.*;
 
+@Component
 public class Email {
+
+    @Value("${setting.pass}")
+    private String password;
 
     public void sendMail(SlimResponse response, Rule rule){
 
         final String username = "wishlistexpedia@gmail.com";
-        final String password = "";
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         Properties props = System.getProperties();
         props.setProperty("mail.smtp.host", "smtp.gmail.com");

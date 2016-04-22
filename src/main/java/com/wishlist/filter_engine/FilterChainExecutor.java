@@ -39,6 +39,9 @@ public class FilterChainExecutor implements Runnable {
     @Autowired
     private ExpediaSearchServiceImpl expediaSearchService;
 
+    @Autowired
+    private Email email;
+
     private Logger log = Logger.getLogger(this.getClass().getName());
 
     private void execute(Rule rule){
@@ -58,7 +61,7 @@ public class FilterChainExecutor implements Runnable {
             slimResponse = filterChainEngine.processCritera(slimResponse, rule.getFilters());
 
             if (slimResponse.getSearchResultList().size()>0){
-                //new Email().sendMail(slimResponse, rule);
+                email.sendMail(slimResponse, rule);
                 doLogging(slimResponse);
             }
 

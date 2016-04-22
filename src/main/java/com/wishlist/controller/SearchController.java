@@ -1,7 +1,7 @@
 package com.wishlist.controller;
 
 import com.wishlist.converter.SlimConverter;
-import com.wishlist.filter_engine.FilterChainHelper;
+import com.wishlist.filter_engine.FileManager;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.slim.SlimResponse;
@@ -10,10 +10,9 @@ import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.ThreadManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
@@ -29,7 +28,7 @@ public class SearchController {
     private FilterChainEngine filterChainEngine;
 
     @Autowired
-    private FilterChainHelper filterChainHelper;
+    private FileManager fileManager;
 
     @Autowired
     private ExpediaSearchServiceImpl expediaSearchService;
@@ -51,14 +50,19 @@ public class SearchController {
         SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
 
         log.info("total search results : "+slimResponse.getSearchResultList().size());
-        slimResponse = filterChainEngine.process(slimResponse, filterChainHelper.readRules());
+        slimResponse = filterChainEngine.process(slimResponse, fileManager.readRules());
 
         return slimResponse;
 	}
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     public int search() throws Exception {
-        return threadManager.executeRules(filterChainHelper.readRules());
+        return threadManager.executeRules(fileManager.readRules());
+    }
+
+    @RequestMapping(value = "/lookup", method = RequestMethod.GET)
+    public List<String> lookUp(@RequestParam(value="email", required=true) String email) throws Exception {
+        return fileManager.lookUp(email);
     }
 
 }
