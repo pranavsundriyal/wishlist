@@ -13,11 +13,11 @@ import javax.mail.internet.*;
 @Component
 public class Email {
 
-    @Value("${setting.pass}")
-    private String password;
-    @Value("$(setting.user)")
+    @Value("${setting.user}")
     private String username;
 
+    @Value("${setting.pass}")
+    private String password;
 
     public void sendMail(SlimResponse response, Rule rule){
 
