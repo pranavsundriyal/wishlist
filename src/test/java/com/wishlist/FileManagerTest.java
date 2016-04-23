@@ -21,22 +21,5 @@ public class FileManagerTest {
         fileManager = new FileManager();
     }
 
-    @Test
-    public void testGetAllFiles(){
-        List<String> files = fileManager.getFiles();
-        assertNotNull(files);
-    }
 
-    @Test
-    public void testReadRules(){
-        List<Rule> rules = fileManager.readRules();
-        assertNotNull(rules);
-    }
-
-    @Test
-    public void testSaveRules(){
-
-        List<Rule> ruleList =fileManager.readRules();
-        Boolean b = fileManager.saveRule(ruleList.get(0));
-    }
 }
