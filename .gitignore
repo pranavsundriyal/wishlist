@@ -16,5 +16,7 @@ work/
 .idea/
 .gradle/
 schema/
+cache/
+out
 build/
 .DS_Store
