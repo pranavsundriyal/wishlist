@@ -10,7 +10,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "140"
+          "lowerLimit" : "120"
         }
       },
       {
@@ -143,7 +143,7 @@
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "140"
+          "lowerLimit" : "120"
         }
       },
       {

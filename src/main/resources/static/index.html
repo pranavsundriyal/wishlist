@@ -62,11 +62,11 @@
                          email: $("#email").val()
                      },
                      success: function (data) {
-                         $('#saved').empty();
+                         $('#rules').empty();
                          if (data) {
-                             $("#saved").append('<br>Sucessfully subscribed<br>');
+                             $("#rules").append('<br>Sucessfully subscribed<br>');
                          } else {
-                             $("#saved").append('<br>error while subscribing<br>');
+                             $("#rules").append('<br>error while subscribing<br>');
                          }
                      }
                  });
@@ -92,7 +92,32 @@
          });
      });
 
-    function getTime(time) {
+     $(document).ready(function() {
+         $("#unsubscribe").click(function () {
+             if ($("#email").val().length >0) {
+                 $.ajax({
+                     type: "GET",
+                     url: "unsubscribe",
+                     data: {
+                         email: $("#email").val()
+                     },
+                     success: function (data) {
+                         $('#rules').empty();
+                         if (data) {
+                             $("#rules").append('<br>Sucessfully unsubscribed<br>');
+                         } else {
+                             $("#rules").append('<br>error while unsubscribing<br>');
+                         }
+                     }
+                 });
+             }
+         });
+     });
+
+
+
+
+     function getTime(time) {
         return time.hour+' hr: ' + time.minute + ' min'
     }
 
@@ -167,12 +192,10 @@
     Flex <input type="checkbox" id="flex" value="flex"><br><br>
     <button id="search" type="button" >Search</button><br><br>
     Email : <br><input type="text" id="email"><br><br>
-    <button id="save" type="button" >Subscribe       </button>
-    <button id="lookup" type="button" >Look Up</button><br><br>
+    <button id="save" type="button" >Subscribe       </button><button id="lookup" type="button" >Look Up       </button><button id="unsubscribe" type="button" >Unsubscribe       </button><br><br>
     </div>
 
     <div id="rules"></div><br><br>
-    <div id="saved"></div><br><br>
     <div id="results"></div><br><br>
 
 </body>

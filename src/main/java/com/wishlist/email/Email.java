@@ -15,10 +15,12 @@ public class Email {
 
     @Value("${setting.pass}")
     private String password;
+    @Value("$(setting.user)")
+    private String username;
+
 
     public void sendMail(SlimResponse response, Rule rule){
 
-        final String username = "wishlistexpedia@gmail.com";
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
         Properties props = System.getProperties();
         props.setProperty("mail.smtp.host", "smtp.gmail.com");

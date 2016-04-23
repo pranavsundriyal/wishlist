@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 import java.util.logging.Logger;
 
 @RestController
@@ -65,4 +66,8 @@ public class SearchController {
         return fileManager.lookUp(email);
     }
 
+    @RequestMapping(value = "/unsubscribe", method = RequestMethod.GET)
+    public Boolean unsubscribe(@RequestParam(value="email", required=true) String email) throws Exception {
+        return fileManager.delete(email);
+    }
 }

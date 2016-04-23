@@ -1,5 +1,6 @@
 package com.wishlist.filter_engine;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wishlist.model.rule.Rule;
@@ -83,13 +84,14 @@ public class FileManager {
             String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rules);
             File file = new File(filePath+"/"+rule.getEmail()+".json");
             if (file.exists()) {
-                deleteFile(file);
+                append(file,rule);
+            } else {
+                file.createNewFile();
+                FileWriter fw = new FileWriter(file.getAbsoluteFile());
+                BufferedWriter bw = new BufferedWriter(fw);
+                bw.write(content);
+                bw.close();
             }
-            file.createNewFile();
-            FileWriter fw = new FileWriter(file.getAbsoluteFile());
-            BufferedWriter bw = new BufferedWriter(fw);
-            bw.write(content);
-            bw.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -114,6 +116,18 @@ public class FileManager {
         }
         return false;
     }
+
+    public  Boolean delete(String email){
+        File[] files = new File(filePath).listFiles();
+        for (File file : files) {
+            if (file.isFile()) {
+                if (file.getName().contains(email)) {
+                    return deleteFile(file);
+                }
+            }
+        }
+        return false;
+    }
     public List<String> lookUp(String email) {
         List<String> results = new ArrayList<>();
         File[] files = new File(filePath).listFiles();
@@ -126,6 +140,33 @@ public class FileManager {
             }
         }
         return null;
+    }
+
+    public void append(File file, Rule rule){
+        String rulesString =readFile(file);
+        deleteFile(file);
+        List<Rule> fileRules = null;
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            fileRules = mapper.readValue(rulesString, new TypeReference<List<Rule>>() {
+            });
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+        fileRules.add(rule);
+        try {
+            String content = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(fileRules);
+            File newFile = new File(filePath + "/" + rule.getEmail() + ".json");
+            newFile.createNewFile();
+            FileWriter fw = new FileWriter(newFile.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+        } catch (JsonProcessingException jpe){
+            jpe.printStackTrace();
+        } catch (IOException e){
+            e.printStackTrace();
+        }
     }
 }
 
