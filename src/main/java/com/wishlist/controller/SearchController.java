@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.function.BooleanSupplier;
 import java.util.logging.Logger;
 
 @RestController
@@ -34,6 +33,9 @@ public class SearchController {
     @Autowired
     private ExpediaSearchServiceImpl expediaSearchService;
 
+    @Autowired
+    private SlimConverter slimConverter;
+
     @RequestMapping(value = "/search", method = RequestMethod.GET)
 	public SlimResponse search(@RequestParam(value="origin", required=true) String origin,
                                @RequestParam(value="dest", required=true) String destination,
@@ -48,7 +50,7 @@ public class SearchController {
         }
         Response response = expediaSearchService.execute(request);
 
-        SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
+        SlimResponse slimResponse = slimConverter.createSlimResponse(response);
 
         log.info("total search results : "+slimResponse.getSearchResultList().size());
         slimResponse = filterChainEngine.process(slimResponse, fileManager.readRules());
@@ -58,7 +60,14 @@ public class SearchController {
 
     @RequestMapping(value = "/find", method = RequestMethod.GET)
     public int search() throws Exception {
-        return threadManager.executeRules(fileManager.readRules());
+        log.info("Executing all rules");
+        return threadManager.executeRules(fileManager.readRules(),0);
+    }
+
+    @RequestMapping(value = "/job", method = RequestMethod.GET)
+    public int search(@RequestParam(value="interval", required=true) String period) throws Exception {
+        log.info("Executing all rules");
+        return threadManager.executeRules(fileManager.readRules(), Integer.parseInt(period));
     }
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)

@@ -30,15 +30,16 @@ import java.util.concurrent.TimeoutException;
 @Component
 public class FlexThreadManager {
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(10);
+    @Autowired
+    private ExecutorService flexExecutorService;
 
     @Autowired
     CacheManager cacheManager;
 
-    public SlimResponse getFlexResponses(Request request) {
+    public SlimResponse getFlexResponses(Request request, int flexDays) {
         List<Response> responses = new ArrayList<>();
 
-        List<Request> requestList = createFlexRequestList(request);
+        List<Request> requestList = createFlexRequests(request, flexDays-1);
 
         Set<Callable<Response>> callables = new HashSet<>();
         for (Request r : requestList) {
@@ -46,10 +47,10 @@ public class FlexThreadManager {
         }
 
         try {
-            List<Future<Response>> futures = executorService.invokeAll(callables);
+            List<Future<Response>> futures = flexExecutorService.invokeAll(callables);
 
             for (Future f : futures) {
-                responses.add((Response) f.get(20L, TimeUnit.SECONDS));
+                responses.add((Response) f.get(30L, TimeUnit.SECONDS));
             }
         } catch (InterruptedException e){
             e.printStackTrace();
@@ -66,57 +67,26 @@ public class FlexThreadManager {
         SlimResponse aggregateResponse = new SlimResponse();
         aggregateResponse.setSearchResultList(new ArrayList<>());
         for (Response response : responses){
-            SlimResponse slimResponse = new SlimConverter().createSlimResponse(response);
+            SlimResponse slimResponse = SlimConverter.createSlimResponse(response);
             aggregateResponse.getSearchResultList().addAll(slimResponse.getSearchResultList());
         }
 
-        PriceSort priceSort = new PriceSort();
-        Collections.sort(aggregateResponse.getSearchResultList(), priceSort);
+        Collections.sort(aggregateResponse.getSearchResultList(), new PriceSort());
         return aggregateResponse;
     }
 
-    public List<Request> createFlexRequestList(Request request) {
+
+    public List<Request> createFlexRequests(Request request, int flexDays) {
         List<Request> requests = new ArrayList<>();
 
-        requests.add(request);
-
-        Request clone1 = Request.cloneRequest(request);
-        clone1.setArrivalDate(Util.addDate(request.getArrivalDate(),-1));
-        clone1.setDeparturteDate(Util.addDate(request.getDeparturteDate(),-1));
-
-        Request clone2 = Request.cloneRequest(request);
-        clone2.setArrivalDate(Util.addDate(request.getArrivalDate(),-1));
-
-        Request clone3 = Request.cloneRequest(request);
-        clone3.setArrivalDate(Util.addDate(request.getArrivalDate(),-1));
-        clone3.setDeparturteDate(Util.addDate(request.getDeparturteDate(),1));
-
-        Request clone4 = Request.cloneRequest(request);
-        clone4.setArrivalDate(Util.addDate(request.getArrivalDate(),1));
-
-        Request clone5 = Request.cloneRequest(request);
-        clone5.setArrivalDate(Util.addDate(request.getArrivalDate(),1));
-        clone5.setDeparturteDate(Util.addDate(request.getDeparturteDate(),1));
-
-        Request clone6 = Request.cloneRequest(request);
-        clone6.setArrivalDate(Util.addDate(request.getArrivalDate(),1));
-
-        Request clone7 = Request.cloneRequest(request);
-        clone7.setArrivalDate(Util.addDate(request.getArrivalDate(),-1));
-        clone7.setDeparturteDate(Util.addDate(request.getDeparturteDate(),1));
-
-        Request clone8 = Request.cloneRequest(request);
-        clone8.setDeparturteDate(Util.addDate(request.getDeparturteDate(),-1));
-
-        requests.add(clone1);
-        requests.add(clone2);
-        requests.add(clone3);
-        requests.add(clone4);
-        requests.add(clone5);
-        requests.add(clone6);
-        requests.add(clone7);
-        requests.add(clone8);
-
+        for (int i=-flexDays; i<=flexDays;i++){
+            for (int j=-flexDays; j<=flexDays; j++){
+                Request clone = Request.cloneRequest(request);
+                clone.setArrivalDate(Util.addDate(request.getArrivalDate(),i));
+                clone.setDeparturteDate(Util.addDate(request.getDeparturteDate(),j));
+                requests.add(clone);
+            }
+        }
         return requests;
     }
 

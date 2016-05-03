@@ -103,8 +103,9 @@ public class WishListMessage {
         StringBuffer sb = new StringBuffer();
         sb.append(rule.getOrigin()).append("-").append(rule.getDestination()).append("/")
                 .append(rule.getDeparturteDate()).append("/").append(rule.getArrivalDate());
-        if (rule.getFlex()){
-            sb.append("/FLEX");
+
+        if (Integer.parseInt(rule.getFlex()) > 0){
+            sb.append("/FLEX+"+rule.getFlex());
         }
         sb.append("\n");
         return sb.toString();

@@ -15,6 +15,7 @@ import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
+import com.wishlist.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -38,8 +39,10 @@ public class FilterChainEngine {
 
     public SlimResponse processCritera(SlimResponse response, List<Filter> filterList){
 
+        response.getFilterCountMap().put("total results", response.getSearchResultList().size());
         for (Filter filter : filterList) {
             if (response.getSearchResultList().size() < 1) {
+                response.setFilterCountMap(Util.sortByComparator(response.getFilterCountMap()));
                 return response;
             }
             if (filter.getFilterType().equalsIgnoreCase("price")) {
@@ -64,6 +67,7 @@ public class FilterChainEngine {
 
             response.getFilterCountMap().put(filter.getFilterType(), response.getSearchResultList().size());
         }
+        response.setFilterCountMap(Util.sortByComparator(response.getFilterCountMap()));
         return response;
     }
 

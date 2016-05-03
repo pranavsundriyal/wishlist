@@ -9,6 +9,7 @@ import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
+import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.FlexThreadManager;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Created by psundriyal on 4/12/16.
@@ -32,9 +34,6 @@ import java.util.logging.Logger;
 @Component
 public class UIcontroller {
     private Logger log = Logger.getLogger(SearchController.class.getName());
-
-    @Autowired
-    private ThreadManager threadManager;
 
     @Autowired
     private FilterChainEngine filterChainEngine;
@@ -48,6 +47,9 @@ public class UIcontroller {
     @Autowired
     private FlexThreadManager flexThreadManager;
 
+    @Autowired
+    private SlimConverter slimConverter;
+
 
     @RequestMapping(value = "/searchExp", method = RequestMethod.GET)
     public SlimResponse search(@RequestParam(value="origin", required=true) String origin,
@@ -55,7 +57,7 @@ public class UIcontroller {
                                @RequestParam(value="departure", required=true) String departureDate,
                                @RequestParam(value="arrival", required=false) String arrivalDate,
                                @RequestParam(value = "filters", required = false) String filters,
-                               @RequestParam(value = "flex", required = false) boolean flex) throws Exception {
+                               @RequestParam(value = "flex", required = false) String flex) throws Exception {
 
         Request request;
         if (arrivalDate == null) {
@@ -66,18 +68,26 @@ public class UIcontroller {
         List<Filter> filterList = getFilterList(filters);
         long startTime = System.currentTimeMillis();
         SlimResponse slimResponse;
-        if (flex)
-            slimResponse = flexThreadManager.getFlexResponses(request);
-        else {
+        int flexDays = Integer.parseInt(flex);
+        if (flexDays > 0) {
+            log.info("firing flex request");
+            slimResponse = flexThreadManager.getFlexResponses(request, flexDays);
+        } else {
+            log.info("firing request");
             Response response = expediaSearchService.execute(request);
-            slimResponse = new SlimConverter().createSlimResponse(response);
+            slimResponse = slimConverter.createSlimResponse(response);
         }
         log.info("time taken: " + (System.currentTimeMillis()-startTime));
 
         log.info("total search results : "+slimResponse.getSearchResultList().size());
 
         slimResponse = filterChainEngine.processCritera(slimResponse, filterList);
+        List<SearchResult> topSearchResulst = slimResponse.getSearchResultList()
+                .stream()
+                .limit(100)
+                .collect(Collectors.toList());
 
+        slimResponse.setSearchResultList(topSearchResulst);
         return slimResponse;
 
     }
@@ -89,18 +99,11 @@ public class UIcontroller {
                                @RequestParam(value="departure", required=true) String departureDate,
                                @RequestParam(value="arrival", required=false) String arrivalDate,
                                @RequestParam(value = "filters", required = false) String filters,
-                               @RequestParam(value = "flex", required = false) boolean flex,
+                               @RequestParam(value = "flex", required = false) String flex,
                                 @RequestParam(value="email", required=false) String email) throws Exception {
 
         List<Filter> filterList = getFilterList(filters);
-        Rule rule = new Rule();
-        rule.setEmail(email);
-        rule.setOrigin(origin);
-        rule.setDestination(destination);
-        rule.setArrivalDate(arrivalDate);
-        rule.setDeparturteDate(departureDate);
-        rule.setFlex(flex);
-        rule.setFilters(filterList);
+        Rule rule = new Rule(email,arrivalDate,departureDate,origin,destination,flex,filterList);
         return fileManager.saveRule(rule);
     }
 

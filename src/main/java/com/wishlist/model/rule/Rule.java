@@ -3,6 +3,8 @@ package com.wishlist.model.rule;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.List;
 
@@ -32,9 +34,22 @@ public class Rule {
     @JsonProperty("destination")
     String destination;
     @JsonProperty("flex")
-    boolean flex;
+    String flex;
     @JsonProperty("filters")
     private List<Filter> filters;
+
+    public Rule(String email, String arrivalDate, String departurteDate, String origin, String destination, String flex, List<Filter> filters) {
+        this.email = email;
+        this.arrivalDate = arrivalDate;
+        this.departurteDate = departurteDate;
+        this.origin = origin;
+        this.destination = destination;
+        this.flex = flex;
+        this.filters = filters;
+    }
+
+    public Rule(){
+    };
 
     public List<Filter> getFilters() {
         return filters;
@@ -84,11 +99,23 @@ public class Rule {
         this.destination = destination;
     }
 
-    public boolean getFlex() {
+    public String getFlex() {
         return flex;
     }
 
-    public void setFlex(boolean flex) {
+    public void setFlex(String flex) {
         this.flex = flex;
+    }
+
+    @Override
+    public String toString(){
+        String rule ="";
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            rule = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(this);
+        }catch (JsonProcessingException jpe){
+            jpe.printStackTrace();
+        }
+        return rule;
     }
 }

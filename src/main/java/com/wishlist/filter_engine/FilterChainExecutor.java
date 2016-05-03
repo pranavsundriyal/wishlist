@@ -1,72 +1,67 @@
 package com.wishlist.filter_engine;
 
-import com.wishlist.controller.SearchController;
 import com.wishlist.converter.SlimConverter;
 import com.wishlist.email.Email;
 import com.wishlist.email.WishListMessage;
-import com.wishlist.filter_engine.FilterChainEngine;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
 import com.wishlist.model.rule.Rule;
-import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
 
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.FlexThreadManager;
 import com.wishlist.util.Util;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.stereotype.Component;
-
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
-/**
- * Created by psundriyal on 3/23/16.
- */
 
-
-@Component
 public class FilterChainExecutor implements Runnable {
 
 
     private Rule rule;
-
-    @Autowired
-    private FlexThreadManager flexThreadManager;
-
-    @Autowired
-    private ExpediaSearchServiceImpl expediaSearchService;
-
-    @Autowired
     private Email email;
+    private FlexThreadManager flexThreadManager;
+    private int intervalPeriod;
 
     private Logger log = Logger.getLogger(this.getClass().getName());
 
-    private void execute(Rule rule){
+    public FilterChainExecutor(Rule rule, Email email, FlexThreadManager flexThreadManager, int intervalPeriod) {
+        this.rule = rule;
+        this.email = email;
+        this.flexThreadManager = flexThreadManager;
+        this.intervalPeriod = intervalPeriod;
+    }
+
+    private void execute() {
+
+        log.info("executing rule : " + rule.toString());
+        Request request = Util.creatRequestFromRule(rule);
+        SlimResponse slimResponse;
+        int flexDays = Integer.parseInt(rule.getFlex());
+        if (flexDays > 0) {
+            slimResponse = flexThreadManager.getFlexResponses(request, flexDays);
+        } else {
+            Response response = new ExpediaSearchServiceImpl().execute(request);
+            slimResponse = SlimConverter.createSlimResponse(response);
+        }
+        log.info(WishListMessage.createSubject(rule) +
+                " search results before operating filter engine : " + slimResponse.getSearchResultList().size() + "\n");
+
+        FilterChainEngine filterChainEngine = new FilterChainEngine();
+        slimResponse = filterChainEngine.processCritera(slimResponse, rule.getFilters());
+
+        if (slimResponse.getSearchResultList().size() > 0) {
+            email.sendMail(slimResponse, rule);
+            doLogging(slimResponse);
+        }
+    }
+
+
+    private void executePeriodically(){
         while (true) {
-            Request request = Util.creatRequestFromRule(rule);
-            SlimResponse slimResponse = null;
-            if (rule.getFlex()){
-                slimResponse = flexThreadManager.getFlexResponses(request);
-            } else {
-                Response response = expediaSearchService.execute(request);
-                slimResponse = new SlimConverter().createSlimResponse(response);
-            }
-            log.info(WishListMessage.createSubject(rule)+
-                    " search results before operating filter engine : "+slimResponse.getSearchResultList().size()+"\n");
-
-            FilterChainEngine filterChainEngine = new FilterChainEngine();
-            slimResponse = filterChainEngine.processCritera(slimResponse, rule.getFilters());
-
-            if (slimResponse.getSearchResultList().size()>0){
-                email.sendMail(slimResponse, rule);
-                doLogging(slimResponse);
-            }
-
+            execute();
             try {
-                TimeUnit.HOURS.sleep(24);
+                TimeUnit.HOURS.sleep(intervalPeriod);
             } catch (InterruptedException exception) {
             }
         }
@@ -74,7 +69,11 @@ public class FilterChainExecutor implements Runnable {
 
     @Override
     public void run() {
-        execute(this.rule);
+        if (intervalPeriod > 0) {
+            executePeriodically();
+        } else {
+            execute();
+        }
         log.info("Thread executed successfully");
     }
 
@@ -86,5 +85,9 @@ public class FilterChainExecutor implements Runnable {
 
     public void setRule(Rule rule) {
         this.rule = rule;
+    }
+
+    public void setEmail(Email email) {
+        this.email = email;
     }
 }

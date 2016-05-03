@@ -39,3 +39,11 @@ dependencies {
 task wrapper(type: Wrapper) {
     gradleVersion = '2.3'
 }
+
+bootRun {
+    jvmArgs = ["-Dapplication.name=${project.name}",
+               "-Dproject.name=${project.name}",
+               "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005"
+    ]
+}
+

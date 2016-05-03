@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SpringBootApplication
 public class Application {
@@ -27,7 +29,16 @@ public class Application {
     @Bean
     public CacheManager cacheManager(){
         CacheManager cacheManager = CacheManager.create();
-        cacheManager.addCache("cache");
         return cacheManager;
+    }
+
+    @Bean
+    public ExecutorService rulesExecutorService(){
+        return Executors.newFixedThreadPool(10);
+    }
+
+    @Bean
+    public ExecutorService flexExecutorService(){
+        return Executors.newFixedThreadPool(10);
     }
 }

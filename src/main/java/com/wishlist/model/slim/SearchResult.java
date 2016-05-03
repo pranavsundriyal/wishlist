@@ -5,8 +5,20 @@ import java.util.List;
 
 public class SearchResult {
 
-    List<com.wishlist.model.Leg> legList;
     String price;
+
+    String url;
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    List<com.wishlist.model.Leg> legList;
+
     public String getPrice() { return price; }
 
     public void setPrice(String price) {

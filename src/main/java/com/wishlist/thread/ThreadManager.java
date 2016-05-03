@@ -1,7 +1,10 @@
 package com.wishlist.thread;
 
+import com.wishlist.converter.SlimConverter;
+import com.wishlist.email.Email;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.filter_engine.FilterChainExecutor;
+import com.wishlist.service.ExpediaSearchServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -16,15 +19,18 @@ import java.util.concurrent.Executors;
 @Component
 public class ThreadManager {
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(10);
-
     @Autowired
-    private FilterChainExecutor filterChainExecutor;
-    public int executeRules(List<Rule> ruleList){
+    private ExecutorService rulesExecutorService;
+    @Autowired
+    private FlexThreadManager flexThreadManager;
+    @Autowired
+    private Email email;
+
+    public int executeRules(List<Rule> ruleList, int intervalPeriod){
 
         for (Rule rule: ruleList){
-            filterChainExecutor.setRule(rule);
-            executorService.execute(filterChainExecutor);
+            FilterChainExecutor filterChainExecutor = new FilterChainExecutor(rule, email, flexThreadManager, intervalPeriod);
+            rulesExecutorService.execute(filterChainExecutor);
         }
         return ruleList.size();
     }

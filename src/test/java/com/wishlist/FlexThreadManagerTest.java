@@ -6,6 +6,7 @@ import com.wishlist.thread.FlexThreadManager;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -31,12 +32,15 @@ public class FlexThreadManagerTest {
     @Test
     public void testFlexManager() throws InterruptedException, ExecutionException, TimeoutException {
         Request request = new Request("2016-05-02", "2016-04-20", "CHI", "LAS");
-        assertNotNull(flexThreadManager.getFlexResponses(request));
+        assertNotNull(flexThreadManager.getFlexResponses(request,1));
     }
 
+
+
     @Test
-    public void testcreateFlexRequestList() {
+    public void testFLexdays(){
         Request request = new Request("2016-05-02", "2016-04-20", "CHI", "BOM");
-        assertEquals(flexThreadManager.createFlexRequestList(request).size(),9);
+        List<Request> requests = flexThreadManager.createFlexRequests(request,1);
+        assertEquals(9,requests.size());
     }
 }

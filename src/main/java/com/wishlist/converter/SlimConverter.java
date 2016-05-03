@@ -18,11 +18,14 @@ import java.util.List;
 import java.util.Map;
 
 
+@Component
 public class SlimConverter {
+
+    private static String URL = "https://www.expedia.com/Flights-Search?";
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-    public SlimResponse createSlimResponse(Response response) {
+    public static SlimResponse createSlimResponse(Response response) {
 
         Map<String, Leg> legMap = mapLegs(response);
 
@@ -37,10 +40,10 @@ public class SlimConverter {
                 legList.add(legMap.get(legId));
             }
             searchResult.setLegList(legList);
+            searchResult.setUrl(computeUrl(searchResult));
             searchResults.add(searchResult);
         }
-        PriceSort priceSort = new PriceSort();
-        Collections.sort(searchResults, priceSort);
+        Collections.sort(searchResults, new PriceSort());
         slimResponse.setSearchResultList(searchResults);
 
         return slimResponse;
@@ -63,4 +66,38 @@ public class SlimConverter {
         return legMap;
     }
 
+    public static String computeUrl(SearchResult searchResult){
+
+        StringBuffer sb = new StringBuffer(URL);
+
+        if (searchResult.getLegList().size() == 2){
+            sb.append("trip=roundtrip");
+        } else if (searchResult.getLegList().size() == 1){
+            sb.append("trip=oneway");
+        } else {
+            sb.append("trip=muticity");
+        }
+
+        sb.append("&leg1=from:" + searchResult.getLegList().get(0).getSegments().get(0).getDepartureAirportCode()
+                +",to:" + searchResult.getLegList().get(0).getSegments().get(searchResult.getLegList().get(0).getSegments().size()-1).getArrivalAirportCode()
+                +",departure:"+getDate(searchResult.getLegList().get(0).getDepartureTime())+"TANYT");
+
+        if (searchResult.getLegList().size() ==2){
+            sb.append("&leg2=from:"+searchResult.getLegList().get(1).getSegments().get(0).getDepartureAirportCode()
+                    +",to:" + searchResult.getLegList().get(1).getSegments().get(searchResult.getLegList().get(1).getSegments().size()-1).getArrivalAirportCode()
+                    +",departure:"+getDate(searchResult.getLegList().get(1).getDepartureTime())+"TANYT");
+        }
+
+        sb.append("&passengers=adults:1&mode=search");
+        return sb.toString();
+
+    }
+
+
+    public static String getDate(LocalDateTime localDateTime) {
+        StringBuffer sb = new StringBuffer();
+        sb.append(localDateTime.getMonthValue() + "/" + localDateTime.getDayOfMonth() +"/"+ localDateTime.getYear());
+
+        return sb.toString();
+    }
 }

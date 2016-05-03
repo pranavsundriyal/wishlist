@@ -10,19 +10,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.concurrent.Callable;
 
-@Service
+@Component
+@Scope("prototype")
 public class ExpediaSearchServiceImpl implements Callable,SearchService {
 
 
     private static String API = "https://www.expedia.com/api/flight/search";
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     private Request request;
-    private Response repsonse;
 
     @Autowired
     private CacheManager cacheManager;
@@ -33,11 +35,11 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
 
     public ExpediaSearchServiceImpl(Request request, CacheManager cacheManager) {
         this.request = request;
-        this.cacheManager =cacheManager;
+        this.cacheManager = cacheManager;
     }
 
     public Response execute(Request request) {
-        Cache cache = cacheManager.getCache("cache1");
+        Cache cache = cacheManager.getCache("cache");
         Response response = null;
         Element elementResponse = cache.get(request.toString());
         if (elementResponse == null) {
@@ -55,9 +57,7 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
 
     public String getParams(Request request) {
         StringBuilder params = new StringBuilder("?");
-
         String departureDate = request.getDeparturteDate();
-
         params.append("departureDate=").append(departureDate).append("&departureAirport=")
                 .append(request.getOrigin()).append("&arrivalAirport=")
                 .append(request.getDestination());
@@ -71,14 +71,6 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
         return params.toString();
     }
 
-
-    public Response getRepsonse() {
-        return repsonse;
-    }
-
-    public void setRepsonse(Response repsonse) {
-        this.repsonse = repsonse;
-    }
 
     @Override
     public Response call() throws Exception {
