@@ -16,6 +16,7 @@ public class Application {
 
     @Value("${setting.cacheEnabled}")
     private Boolean cacheEnabled;
+
     public static void main(String[] args) {
 
         ApplicationContext ctx = SpringApplication.run(Application.class, args);

@@ -84,7 +84,7 @@ public class FilterChainExecutor implements Runnable {
     private void doLogging(SlimResponse slimResponse) {
         log.info(WishListMessage.createSubject(rule));
         log.info("total search results after rule engine processing: " + slimResponse.getSearchResultList().size());
-        log.info(WishListMessage.createMessageAll(rule,slimResponse));
+        log.info(WishListMessage.createMessage(rule,slimResponse));
     }
 
     public void setRule(Rule rule) {

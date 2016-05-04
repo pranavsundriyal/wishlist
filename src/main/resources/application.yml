@@ -2,4 +2,4 @@ setting:
   user: "wishlistexpedia@gmail.com"
   pass: ""
   filepath: "/Users/psundriyal/expedia/wishlist/src/main/resources/rules"
-  cacheEnabled: false
+  cacheEnabled: true
