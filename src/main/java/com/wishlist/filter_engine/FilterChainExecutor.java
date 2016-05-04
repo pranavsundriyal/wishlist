@@ -11,6 +11,8 @@ import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.FlexThreadManager;
 import com.wishlist.util.Util;
+import net.sf.ehcache.CacheManager;
+
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -21,15 +23,17 @@ public class FilterChainExecutor implements Runnable {
     private Rule rule;
     private Email email;
     private FlexThreadManager flexThreadManager;
+    private CacheManager cacheManager;
     private int intervalPeriod;
 
     private Logger log = Logger.getLogger(this.getClass().getName());
 
-    public FilterChainExecutor(Rule rule, Email email, FlexThreadManager flexThreadManager, int intervalPeriod) {
+    public FilterChainExecutor(Rule rule, Email email, FlexThreadManager flexThreadManager, int intervalPeriod, CacheManager cacheManager) {
         this.rule = rule;
         this.email = email;
         this.flexThreadManager = flexThreadManager;
         this.intervalPeriod = intervalPeriod;
+        this.cacheManager =cacheManager;
     }
 
     private void execute() {
@@ -41,7 +45,7 @@ public class FilterChainExecutor implements Runnable {
         if (flexDays > 0) {
             slimResponse = flexThreadManager.getFlexResponses(request, flexDays);
         } else {
-            Response response = new ExpediaSearchServiceImpl().execute(request);
+            Response response = new ExpediaSearchServiceImpl(request,cacheManager).execute();
             slimResponse = SlimConverter.createSlimResponse(response);
         }
         log.info(WishListMessage.createSubject(rule) +

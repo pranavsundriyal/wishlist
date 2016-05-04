@@ -1,19 +1,21 @@
 package com.wishlist;
 
 import net.sf.ehcache.CacheManager;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 @SpringBootApplication
 public class Application {
 
+    @Value("${setting.cacheEnabled}")
+    private Boolean cacheEnabled;
     public static void main(String[] args) {
 
         ApplicationContext ctx = SpringApplication.run(Application.class, args);
@@ -28,8 +30,12 @@ public class Application {
 
     @Bean
     public CacheManager cacheManager(){
-        CacheManager cacheManager = CacheManager.create();
-        return cacheManager;
+        if (cacheEnabled) {
+            CacheManager cacheManager = CacheManager.create();
+            return cacheManager;
+        } else {
+            return null;
+        }
     }
 
     @Bean

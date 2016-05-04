@@ -5,6 +5,7 @@ import com.wishlist.email.Email;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.filter_engine.FilterChainExecutor;
 import com.wishlist.service.ExpediaSearchServiceImpl;
+import net.sf.ehcache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,11 +26,13 @@ public class ThreadManager {
     private FlexThreadManager flexThreadManager;
     @Autowired
     private Email email;
+    @Autowired
+    private CacheManager cacheManager;
 
     public int executeRules(List<Rule> ruleList, int intervalPeriod){
 
         for (Rule rule: ruleList){
-            FilterChainExecutor filterChainExecutor = new FilterChainExecutor(rule, email, flexThreadManager, intervalPeriod);
+            FilterChainExecutor filterChainExecutor = new FilterChainExecutor(rule, email, flexThreadManager, intervalPeriod, cacheManager);
             rulesExecutorService.execute(filterChainExecutor);
         }
         return ruleList.size();

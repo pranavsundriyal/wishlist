@@ -8,6 +8,7 @@ import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.filter_engine.FilterChainEngine;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.ThreadManager;
+import net.sf.ehcache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +37,9 @@ public class SearchController {
     @Autowired
     private SlimConverter slimConverter;
 
+    @Autowired
+    private CacheManager cacheManager;
+
     @RequestMapping(value = "/search", method = RequestMethod.GET)
 	public SlimResponse search(@RequestParam(value="origin", required=true) String origin,
                                @RequestParam(value="dest", required=true) String destination,
@@ -48,7 +52,7 @@ public class SearchController {
         } else {
              request = new Request(arrivalDate,departureDate, origin, destination);
         }
-        Response response = expediaSearchService.execute(request);
+        Response response = new ExpediaSearchServiceImpl(request,cacheManager).execute();
 
         SlimResponse slimResponse = slimConverter.createSlimResponse(response);
 

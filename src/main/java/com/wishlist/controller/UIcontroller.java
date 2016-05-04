@@ -13,7 +13,7 @@ import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.service.ExpediaSearchServiceImpl;
 import com.wishlist.thread.FlexThreadManager;
-import com.wishlist.thread.ThreadManager;
+import net.sf.ehcache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -42,7 +42,7 @@ public class UIcontroller {
     private FileManager fileManager;
 
     @Autowired
-    private ExpediaSearchServiceImpl expediaSearchService;
+    private CacheManager cacheManager;
 
     @Autowired
     private FlexThreadManager flexThreadManager;
@@ -74,7 +74,7 @@ public class UIcontroller {
             slimResponse = flexThreadManager.getFlexResponses(request, flexDays);
         } else {
             log.info("firing request");
-            Response response = expediaSearchService.execute(request);
+            Response response = new ExpediaSearchServiceImpl(request, cacheManager).execute();
             slimResponse = slimConverter.createSlimResponse(response);
         }
         log.info("time taken: " + (System.currentTimeMillis()-startTime));

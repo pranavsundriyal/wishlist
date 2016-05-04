@@ -19,7 +19,7 @@ import java.util.concurrent.Callable;
 
 @Component
 @Scope("prototype")
-public class ExpediaSearchServiceImpl implements Callable,SearchService {
+public class ExpediaSearchServiceImpl implements Callable {
 
 
     private static String API = "https://www.expedia.com/api/flight/search";
@@ -38,23 +38,32 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
         this.cacheManager = cacheManager;
     }
 
-    public Response execute(Request request) {
-        Cache cache = cacheManager.getCache("cache");
+    public Response execute() {
         Response response = null;
-        Element elementResponse = cache.get(request.toString());
-        if (elementResponse == null) {
 
-            String url = API + getParams(request);
-            RestTemplate restTemplate = new RestTemplate();
-            response = restTemplate.getForObject(url, Response.class);
-            Element element = new Element(request.toString(), response);
-            cache.put(element);
-        } else {
-            response = (Response) elementResponse.getObjectValue();
+        if (cacheManager != null) {
+            Cache cache = cacheManager.getCache("cache");
+            Element elementResponse = cache.get(request.toString());
+            if (elementResponse != null) {
+                response = (Response) elementResponse.getObjectValue();
+                return response;
+            }
+            else {
+                response = executeCall();
+                Element element = new Element(request.toString(), response);
+                cache.put(element);
+                return response;
+            }
         }
-        return response;
+        return executeCall();
     }
 
+    public Response executeCall(){
+        String url = API + getParams(request);
+        RestTemplate restTemplate = new RestTemplate();
+        Response response = restTemplate.getForObject(url, Response.class);
+        return response;
+    }
     public String getParams(Request request) {
         StringBuilder params = new StringBuilder("?");
         String departureDate = request.getDeparturteDate();
@@ -74,6 +83,6 @@ public class ExpediaSearchServiceImpl implements Callable,SearchService {
 
     @Override
     public Response call() throws Exception {
-        return execute(request);
+        return execute();
     }
 }
