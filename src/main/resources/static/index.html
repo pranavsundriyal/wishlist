@@ -148,6 +148,11 @@
                     $("input:radio[name=airline]:checked").val() +'","list" : "' +$("#airline").val()+'"}}'
             filters = filters+airline;
         }
+        if($("#flightNumber").val().length > 0) {
+            var flightNumber = ',{"filterType" : "flightNumber","filterMap" : {"qualifier" : "'+
+                    $("input:radio[name=flightNumber]:checked").val() +'","list" : "' +$("#flightNumber").val()+'"}}'
+            filters = filters+flightNumber;
+        }
         if($("#connection").val().length > 0) {
             var airline = ',{"filterType" : "connectionStop","filterMap" : {"qualifier" : "'+
                     $("input:radio[name=connection]:checked").val()+'","list" : "' +$("#connection").val()+'"}}'
@@ -197,6 +202,7 @@
     Duration : <br><input type="text" id="duration"><br>
     Layover : <br><input type="text" id="layover"><br>
     Stops : <br><input type="text" id="stops"><br>
+    Flight Number : <br><input type="text" id="flightNumber">    include<input type="radio" name="flightNumber" value="include">    exclude<input type="radio" name="flightNumber" value="exclude"><br>
     Departure Time : <br><input type="text" id="departureTime">    before<input type="radio" name="departTime" value="before">    after<input type="radio" name="departTime" value="after"><br>
     Arrival Time : <br><input type="text" id="arrivalTime">    before<input type="radio" name="arrivalTime" value="before">    after<input type="radio" name="arrivalTime" value="after"><br>
     Flex:  0<input type="radio" name="flex" value="0" checked> 2<input type="radio" name="flex" value="2">    3<input type="radio" name="flex" value="3"><br><br>

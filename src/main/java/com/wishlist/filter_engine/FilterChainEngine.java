@@ -7,6 +7,7 @@ import com.wishlist.filter.ArrivalTimeFilter;
 import com.wishlist.filter.ConnectionStopsFilter;
 import com.wishlist.filter.DepartureTimeFilter;
 import com.wishlist.filter.DurationFilter;
+import com.wishlist.filter.FlightNumberFilter;
 import com.wishlist.filter.InFlightDuration;
 import com.wishlist.filter.LayoverFilter;
 import com.wishlist.filter.PriceFilter;
@@ -63,6 +64,8 @@ public class FilterChainEngine {
                 response = new AirlineFilter().filter(response, filter.getFilterMap());
             } else if (filter.getFilterType().equalsIgnoreCase("connectionStop")) {
                 response = new ConnectionStopsFilter().filter(response, filter.getFilterMap());
+            } else if (filter.getFilterType().equalsIgnoreCase("flightNumber")) {
+                response = new FlightNumberFilter().filter(response, filter.getFilterMap());
             }
 
             response.getFilterCountMap().put(filter.getFilterType(), response.getSearchResultList().size());
