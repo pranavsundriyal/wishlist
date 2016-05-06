@@ -29,7 +29,7 @@ public class FlexThreadManagerTest {
         flexThreadManager = new FlexThreadManager();
     }
 
-    @Test
+
     public void testFlexManager() throws InterruptedException, ExecutionException, TimeoutException {
         Request request = new Request("2016-05-02", "2016-04-20", "CHI", "LAS");
         assertNotNull(flexThreadManager.getFlexResponses(request,1));
