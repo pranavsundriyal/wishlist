@@ -1,6 +1,7 @@
 package com.wishlist.service;
 
 
+import com.wishlist.compression.CompressionUtil;
 import com.wishlist.model.Response;
 import com.wishlist.model.Request;
 import net.sf.ehcache.Cache;
@@ -45,12 +46,12 @@ public class ExpediaSearchServiceImpl implements Callable {
             Cache cache = cacheManager.getCache("cache");
             Element elementResponse = cache.get(request.toString());
             if (elementResponse != null) {
-                response = (Response) elementResponse.getObjectValue();
+                response =  CompressionUtil.decompress((byte[]) elementResponse.getObjectValue());
                 return response;
             }
             else {
                 response = executeCall();
-                Element element = new Element(request.toString(), response);
+                Element element = new Element(request.toString(), CompressionUtil.compress(response));
                 cache.put(element);
                 return response;
             }
