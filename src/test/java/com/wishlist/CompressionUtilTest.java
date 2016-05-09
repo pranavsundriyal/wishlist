@@ -25,6 +25,6 @@ public class CompressionUtilTest {
         response.setLegs(legs);
         byte [] as = CompressionUtil.compress(response);
         Response response1 = CompressionUtil.decompress(as);
-        assertEquals(response.getLegs(), response1.getLegs());
+        assertEquals(response.getLegs().size(), response1.getLegs().size());
     }
 }

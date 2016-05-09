@@ -79,20 +79,13 @@
       {
         "filterType" : "duration",
         "filterMap" : {
-          "hours" : "8"
+          "hours" : "5"
         }
       },
       {
         "filterType" : "stops",
         "filterMap" : {
           "noStops" : "1"
-        }
-      },
-      {
-        "filterType" : "departureTime",
-        "filterMap" : {
-          "hours" : "16",
-          "time" : "after"
         }
       }
     ]
@@ -114,20 +107,13 @@
       {
         "filterType" : "duration",
         "filterMap" : {
-          "hours" : "7"
+          "hours" : "5"
         }
       },
       {
         "filterType" : "stops",
         "filterMap" : {
           "noStops" : "1"
-        }
-      },
-      {
-        "filterType" : "departureTime",
-        "filterMap" : {
-          "hours" : "16",
-          "time" : "after"
         }
       }
     ]
@@ -156,13 +142,6 @@
         "filterType" : "stops",
         "filterMap" : {
           "noStops" : "0"
-        }
-      },
-      {
-        "filterType" : "departureTime",
-        "filterMap" : {
-          "hours" : "16",
-          "time" : "after"
         }
       }
     ]
