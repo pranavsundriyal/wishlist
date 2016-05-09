@@ -2,7 +2,9 @@
 <head>
     <meta charset="UTF-8">
     <title> WishList</title>
-    <script src="jquery.js"></script>
+    <link rel="stylesheet" href="css/jquery-ui.css">
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery-ui.js"></script>
     <script type="text/javascript">
 
      $(document).ready(function() {
@@ -188,6 +190,30 @@
 
         return filters;
     }
+     $(function() {
+         $( "#datepicker" ).datepicker({ dateFormat: 'yy-mm-dd' });
+     });
+
+     $(function() {
+         $( "#departure" ).datepicker({
+             dateFormat: 'yy-mm-dd',
+             defaultDate: "+1w",
+             changeMonth: true,
+             numberOfMonths: 2,
+             onClose: function( selectedDate ) {
+                 $( "#arrival" ).datepicker( "option", "minDate", selectedDate );
+             }
+         });
+         $( "#arrival" ).datepicker({
+             dateFormat: 'yy-mm-dd',
+             defaultDate: "+1w",
+             changeMonth: true,
+             numberOfMonths: 2,
+             onClose: function( selectedDate ) {
+                 $( "#departure" ).datepicker( "option", "maxDate", selectedDate );
+             }
+         });
+     });
     </script>
 </head>
 <body>
