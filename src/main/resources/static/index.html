@@ -87,6 +87,28 @@
      });
 
      $(document).ready(function() {
+         $("#trends").click(function () {
+             $.ajax({
+                 type: "GET",
+                 url: "trend",
+                 data: {
+                     origin: $("#origin").val(),
+                     dest: $("#dest").val(),
+                     departure: $("#departure").val()
+                 },
+                 success: function (data) {
+                     $('#trendsResult').empty();
+                     if (data) {
+                         $("#trendsResult").append(data);
+                     } else {
+                         $("#trendsResult").append('<br>error while getting trends<br>');
+                     }
+                 }
+             });
+         });
+     });
+
+     $(document).ready(function() {
          $("#lookup").click(function () {
              if ($("#email").val().length >0) {
                  $.ajax({
@@ -234,8 +256,10 @@
     Flex:  0<input type="radio" name="flex" value="0" checked> 2<input type="radio" name="flex" value="2">    3<input type="radio" name="flex" value="3"><br><br>
     <button id="search" type="button" >Search</button><br><br>
     Email : <br><input type="text" id="email"><br><br>
-    <button id="save" type="button" >Subscribe       </button><button id="lookup" type="button" >Look Up       </button><button id="unsubscribe" type="button" >Unsubscribe       </button><br><br>
+    <button id="save" type="button" >Subscribe</button><button id="lookup" type="button" >Look Up</button>
+        <button id="unsubscribe" type="button" >Unsubscribe</button><button id="trends" type="button" >Trends</button><br><br>
     </div>
+    <div id="trendsResult"></div><br>
     <div id="status"></div><br>
     <div id="rules"></div><br><br>
     <div id="results"></div><br><br>

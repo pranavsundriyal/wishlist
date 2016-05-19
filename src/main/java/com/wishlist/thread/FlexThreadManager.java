@@ -82,7 +82,9 @@ public class FlexThreadManager {
         for (int i=-flexDays; i<=flexDays;i++){
             for (int j=-flexDays; j<=flexDays; j++){
                 Request clone = Request.cloneRequest(request);
-                clone.setArrivalDate(Util.addDate(request.getArrivalDate(),i));
+                if(!request.getArrivalDate().equals("")) {
+                    clone.setArrivalDate(Util.addDate(request.getArrivalDate(), i));
+                }
                 clone.setDeparturteDate(Util.addDate(request.getDeparturteDate(),j));
                 requests.add(clone);
             }
