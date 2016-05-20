@@ -47,16 +47,14 @@ public class FlexThreadManager {
         }
 
         try {
-            List<Future<Response>> futures = flexExecutorService.invokeAll(callables);
+            List<Future<Response>> futures = flexExecutorService.invokeAll(callables, 30L,TimeUnit.SECONDS);
 
             for (Future f : futures) {
-                responses.add((Response) f.get(30L, TimeUnit.SECONDS));
+                responses.add((Response) f.get());
             }
         } catch (InterruptedException e){
             e.printStackTrace();
         } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
             e.printStackTrace();
         }
 
