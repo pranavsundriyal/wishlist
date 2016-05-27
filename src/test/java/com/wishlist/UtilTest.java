@@ -35,6 +35,14 @@ public class UtilTest {
     }
 
     @Test
+    public void parseDurationDH() throws IOException {
+        LocalTime time =  Util.parseDuration("P1DT55M");
+        assertEquals(time.getHour(), 0);
+        assertEquals(time.getMinute(), 55);
+
+    }
+
+    @Test
     public void parseDurationM() throws IOException {
         LocalTime time =  Util.parseDuration("PT15M");
         assertEquals(time.getHour(), 0);
@@ -49,7 +57,7 @@ public class UtilTest {
         assertEquals(Util.addDate("2016-04-1", 1),"2016-04-02");
     }
 
-    //@Test
+    @Test
     public void testaddLocalTime() {
         LocalTime t1 = LocalTime.of(12,20,0,0);
         LocalTime t2 = LocalTime.of(17,34,0,0);

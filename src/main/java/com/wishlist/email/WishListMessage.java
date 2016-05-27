@@ -7,7 +7,10 @@ import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.util.Util;
+import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Component;
+
+import java.util.logging.Logger;
 
 /**
  * Created by psundriyal on 3/23/16.
@@ -17,6 +20,8 @@ import org.springframework.stereotype.Component;
 public class WishListMessage {
 
     private static String URL = "https://www.expedia.com/Flights-Search?";
+
+    private static Logger log = Logger.getLogger(WishListMessage.class.getName());
 
     public static String createMessage(Rule rule, SlimResponse response){
 
@@ -45,7 +50,7 @@ public class WishListMessage {
             sb.append(response.getSearchResultList().get(i).getUrl()).append("\n");
             for (Leg leg : response.getSearchResultList().get(i).getLegList()) {
                 sb.append("Time departure : " +leg.getDepartureTime().toString()+" | arrival: "+leg.getArrivalTime()+"\n");
-                sb.append("Total duration: "+Util.addLocalTime(leg.getDuration(),leg.getLayover()).toString()+
+                sb.append("Total duration: "+Util.addLocalTimes(leg.getDuration(),leg.getLayover()).toString()+
                         " | Layover: " +leg.getLayover().toString()+"\n");
                 for (Segment segment : leg.getSegments()) {
                     sb.append("Connection Origin: "+segment.getDepartureAirportLocation()+
@@ -97,7 +102,13 @@ public class WishListMessage {
     }
 
     public static String formatDate(String date) {
-        String s= date.replace('-','/');
-        return s.substring(5)+"/"+s.substring(0,4);
+        String s = date.replace('-','/');
+        String d = null;
+        try {
+            d = s.substring(5) + "/" + s.substring(0, 4);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+        }
+        return d;
     }
 }

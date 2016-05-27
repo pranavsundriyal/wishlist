@@ -3,20 +3,28 @@ package com.wishlist.filter_engine;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.wishlist.compression.CompressionUtil;
 import com.wishlist.model.rule.Rule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Created by psundriyal on 3/30/16.
@@ -96,6 +104,29 @@ public class FileManager {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
+        }
+        return true;
+    }
+
+    public Boolean saveGzippedRule(Rule rule) throws IOException{
+        BufferedWriter writer = null;
+        try{
+            File file =new File(filePath+"/"+rule.getEmail());
+            file.createNewFile();
+            GZIPOutputStream zip = new GZIPOutputStream(new FileOutputStream(file));
+            writer = new BufferedWriter(new OutputStreamWriter(zip, "UTF-8"));
+            writer.append(CompressionUtil.compressToJSON(rule));
+        } catch (FileNotFoundException fe){
+            fe.printStackTrace();
+        } catch (UnsupportedEncodingException use) {
+            use.printStackTrace();
+        } catch (IOException io){
+            io.printStackTrace();
+        }
+
+        finally {
+            if (writer != null)
+                writer.close();
         }
         return true;
     }

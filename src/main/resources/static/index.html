@@ -32,8 +32,9 @@
                      })
                      $("#results").append('<br>');
                      for(var i=0; i<data.searchResultList.length; i++){
+                         $("#results").append('<hr>');
                          $("#results").append('<a href="'+data.searchResultList[i].url+'" target="_blank">' +
-                                 '<div>Price :' + data.searchResultList[i].price + '<br>');
+                                 'Price :' + data.searchResultList[i].price + '</a><br>');
                          for (var j=0; j<data.searchResultList[i].legList.length; j++) {
                              var leg = data.searchResultList[i].legList[j];
                              $("#results").append('Departure Time : ' +getDateTime(leg.departureTime)
@@ -48,7 +49,8 @@
                              }
                              $("#results").append('<br>');
                          }
-                         $("#results").append('<br><br></div></a>');
+                         $("#results").append('<hr>');
+                         $("#results").append('<br><br>');
                      }
                  },
                  error: function(data) {
@@ -239,23 +241,24 @@
     </script>
 </head>
 <body>
+<div>
     <div>
-    Origin :<br><input type="text" id="origin" value="CHI"><br>
-    Destination :<br><input type="text" id="dest" value="SEA"><br>
-    Departure :<br><input type="text" id="departure" value="2016-07-20"><br>
-    Arrival :<br><input type="text" id="arrival" value="2016-08-02"><br>
-    Price: <br><input type="text" id="price" value="1100"><br>
-    Airline : <br><input type="text" id="airline">    include<input type="radio" name="airline" value="include">    exclude<input type="radio" name="airline" value="exclude"><br>
-    Connection Stops : <br><input type="text" id="connection">    include<input type="radio" name="connection" value="include">    exclude<input type="radio" name="connection" value="exclude"><br>
-    Duration : <br><input type="text" id="duration"><br>
-    Layover : <br><input type="text" id="layover"><br>
-    Stops : <br><input type="text" id="stops"><br>
-    Flight Number : <br><input type="text" id="flightNumber">    include<input type="radio" name="flightNumber" value="include">    exclude<input type="radio" name="flightNumber" value="exclude"><br>
-    Departure Time : <br><input type="text" id="departureTime">    before<input type="radio" name="departTime" value="before">    after<input type="radio" name="departTime" value="after"><br>
-    Arrival Time : <br><input type="text" id="arrivalTime">    before<input type="radio" name="arrivalTime" value="before">    after<input type="radio" name="arrivalTime" value="after"><br>
+    Origin :<input type="text" id="origin" value="CHI"><br><br>
+    Destination :<input type="text" id="dest" value="SEA"><br><br>
+    Departure :<input type="text" id="departure" value="2016-07-20"><br><br>
+    Arrival :<input type="text" id="arrival" value="2016-08-02"><br><br>
+    Price: <input type="text" id="price" value="1100"><br><br>
+    Airline : <input type="text" id="airline">    include<input type="radio" name="airline" value="include">    exclude<input type="radio" name="airline" value="exclude"><br><br>
+    Connection Stops : <input type="text" id="connection">    include<input type="radio" name="connection" value="include">    exclude<input type="radio" name="connection" value="exclude"><br><br>
+    Duration : <input type="text" id="duration"><br><br>
+    Layover : <input type="text" id="layover"><br><br>
+    Stops : <input type="text" id="stops"><br><br>
+    Flight Number : <input type="text" id="flightNumber">    include<input type="radio" name="flightNumber" value="include">    exclude<input type="radio" name="flightNumber" value="exclude"><br><br>
+    Departure Time : <input type="text" id="departureTime">    before<input type="radio" name="departTime" value="before">    after<input type="radio" name="departTime" value="after"><br><br>
+    Arrival Time : <input type="text" id="arrivalTime">    before<input type="radio" name="arrivalTime" value="before">    after<input type="radio" name="arrivalTime" value="after"><br><br>
     Flex:  0<input type="radio" name="flex" value="0" checked> 2<input type="radio" name="flex" value="2">    3<input type="radio" name="flex" value="3"><br><br>
     <button id="search" type="button" >Search</button><br><br>
-    Email : <br><input type="text" id="email"><br><br>
+    Email : <input type="text" id="email"><br><br>
     <button id="save" type="button" >Subscribe</button><button id="lookup" type="button" >Look Up</button>
         <button id="unsubscribe" type="button" >Unsubscribe</button><button id="trends" type="button" >Trends</button><br><br>
     </div>
@@ -264,5 +267,6 @@
     <div id="rules"></div><br><br>
     <div id="results"></div><br><br>
 
+</div>
 </body>
 </html>

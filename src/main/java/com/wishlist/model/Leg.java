@@ -42,9 +42,9 @@ public class Leg implements Serializable{
 
         private LocalDateTime departureTime;
 
-        private LocalTime duration;
+        private Time duration;
 
-        private LocalTime layover;
+        private Time layover;
 
         private Time totalDuration;
         /**
@@ -154,19 +154,19 @@ public class Leg implements Serializable{
                 this.departureTime = departureTime;
         }
 
-        public LocalTime getDuration() {
+        public Time getDuration() {
                 return duration;
         }
 
-        public void setDuration(LocalTime duration) {
+        public void setDuration(Time duration) {
                 this.duration = duration;
         }
 
-        public LocalTime getLayover() {
+        public Time getLayover() {
                 return layover;
         }
 
-        public void setLayover(LocalTime layover) {
+        public void setLayover(Time layover) {
                 this.layover = layover;
         }
 

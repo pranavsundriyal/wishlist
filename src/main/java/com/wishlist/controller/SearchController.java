@@ -32,9 +32,6 @@ public class SearchController {
     private FileManager fileManager;
 
     @Autowired
-    private ExpediaSearchServiceImpl expediaSearchService;
-
-    @Autowired
     private SlimConverter slimConverter;
 
     @Autowired

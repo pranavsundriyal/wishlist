@@ -23,12 +23,16 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.logging.Logger;
 
 /**
  * Created by psundriyal on 4/3/16.
  */
 @Component
 public class FlexThreadManager {
+
+    private Logger log = Logger.getLogger(this.getClass().getName());
+
 
     @Autowired
     private ExecutorService flexExecutorService;
@@ -47,15 +51,15 @@ public class FlexThreadManager {
         }
 
         try {
-            List<Future<Response>> futures = flexExecutorService.invokeAll(callables, 30L,TimeUnit.SECONDS);
+            List<Future<Response>> futures = flexExecutorService.invokeAll(callables, 50L,TimeUnit.SECONDS);
 
             for (Future f : futures) {
                 responses.add((Response) f.get());
             }
         } catch (InterruptedException e){
-            e.printStackTrace();
+            log.info(e.getMessage());
         } catch (ExecutionException e) {
-            e.printStackTrace();
+            log.info(e.getMessage());
         }
 
         return merge(responses);

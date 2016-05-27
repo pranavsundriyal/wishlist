@@ -2,41 +2,6 @@
   {
     "email" : "psundriyal@expedia.com",
     "origin" : "CHI",
-    "destination" : "ATL",
-    "departurteDate" : "2016-09-02",
-    "arrivalDate" : "2016-09-05",
-    "flex" : "2",
-    "filters" : [
-      {
-        "filterType" : "price",
-        "filterMap" : {
-          "lowerLimit" : "120"
-        }
-      },
-      {
-        "filterType" : "duration",
-        "filterMap" : {
-          "hours" : "3"
-        }
-      },
-      {
-        "filterType" : "stops",
-        "filterMap" : {
-          "noStops" : "0"
-        }
-      },
-      {
-        "filterType" : "departureTime",
-        "filterMap" : {
-          "hours" : "16",
-          "time" : "after"
-        }
-      }
-    ]
-  },
-  {
-    "email" : "psundriyal@expedia.com",
-    "origin" : "CHI",
     "destination" : "BOM",
     "departurteDate" : "2016-12-16",
     "arrivalDate" : "2017-01-08",
@@ -62,58 +27,24 @@
       }
     ]
   },
-  {
-    "email" : "psundriyal@expedia.com",
-    "origin" : "CHI",
-    "destination" : "MIA",
-    "departurteDate" : "2016-09-02",
-    "arrivalDate" : "2016-09-05",
-    "flex" : "2",
+  { "email" : "psundriyal@expedia.com",
+    "origin" : "NYC",
+    "destination" : "CHI",
+    "departurteDate" : "2016-08-29",
+    "arrivalDate" : "",
+    "flex" : "0",
     "filters" : [
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "250"
-        }
-      },
-      {
-        "filterType" : "duration",
-        "filterMap" : {
-          "hours" : "5"
+          "lowerLimit" : "75"
         }
       },
       {
         "filterType" : "stops",
-        "filterMap" : {
-          "noStops" : "1"
-        }
-      }
-    ]
-  },
-  {
-    "email" : "psundriyal@expedia.com",
-    "origin" : "CHI",
-    "destination" : "MIA",
-    "departurteDate" : "2016-11-23",
-    "arrivalDate" : "2016-11-27",
-    "flex" : "2",
-    "filters" : [
-      {
-        "filterType" : "price",
-        "filterMap" : {
-          "lowerLimit" : "300"
-        }
-      },
-      {
-        "filterType" : "duration",
-        "filterMap" : {
-          "hours" : "5"
-        }
-      },
-      {
-        "filterType" : "stops",
-        "filterMap" : {
-          "noStops" : "1"
+        "filterMap" :
+        {
+          "noStops" : "0"
         }
       }
     ]
