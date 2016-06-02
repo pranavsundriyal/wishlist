@@ -5,7 +5,7 @@ google.charts.load('current', {'packages':['line']});
 
 function drawChart(trends) {
     var tripType = 1;
-    if($("arrival").val() == null) {
+    if($("#arrival").val() == 0) {
         tripType = 2;
     }
     var x = new Array(trends.length);
