@@ -2,6 +2,7 @@ package com.wishlist.controller;
 
 import com.wishlist.model.Request;
 import com.wishlist.model.slim.SlimResponse;
+import com.wishlist.model.trends.TrendResponse;
 import com.wishlist.trends.TrendServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -22,9 +23,9 @@ public class TrendController {
     TrendServiceImpl trendService;
 
     @RequestMapping(value = "/trend", method = RequestMethod.GET)
-    public String search(@RequestParam(value = "origin", required = true) String origin,
-                               @RequestParam(value = "dest", required = true) String destination,
-                               @RequestParam(value = "departure", required = true) String departureDate)
+    public TrendResponse search(@RequestParam(value = "origin", required = true) String origin,
+                                @RequestParam(value = "dest", required = true) String destination,
+                                @RequestParam(value = "departure", required = true) String departureDate)
             throws Exception {
 
         return trendService.executeCall(new Request(departureDate, origin, destination));
