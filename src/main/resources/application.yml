@@ -1,6 +1,6 @@
 setting:
   user: "wishlistexpedia@gmail.com"
   pass: ""
-  trendPass: "bSsA2klOU6l5YTbkREUVanlHVS9KXxff"
+  trendPass: ""
   filepath: "/Users/psundriyal/expedia/wishlist/src/main/resources/rules"
   cacheEnabled: true
