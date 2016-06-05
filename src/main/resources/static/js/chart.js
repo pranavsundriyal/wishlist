@@ -30,26 +30,15 @@ function drawChart(data) {
         }
     }
 
-    $("#advice").append('<b>Predication</b><br>'+'Lowest Price : ' + data.lowestPrice/tripType + ' in last 15 days<br>')
-    var direction;
-    var pricePredication;
-    if(data.recommended.predictionNextWeek.prediction > 0) {
-        direction = 'increase'
-    } else {
-        direction = 'decrease'
-        pricePredication = - (parseFloat(data.recommended.predictionNextWeek.prediction))
-    }
-    $("#advice").append('Prediction for next week is price will ' + direction + ' by '
-        + pricePredication+' with confidence ' +
-        data.recommended.predictionNextWeek.confidence)
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Date');
-    data.addColumn('number', 'Minimum Price');
-    data.addColumn('number', 'Median Price');
-    data.addColumn('number', 'High Price');
-    data.addColumn('number', 'Price Limit');
 
-    data.addRows(x);
+    var chartData = new google.visualization.DataTable();
+    chartData.addColumn('string', 'Date');
+    chartData.addColumn('number', 'Minimum Price');
+    chartData.addColumn('number', 'Median Price');
+    chartData.addColumn('number', 'High Price');
+    chartData.addColumn('number', 'Price Limit');
+
+    chartData.addRows(x);
 
     var options = {
         chart: {
@@ -62,5 +51,22 @@ function drawChart(data) {
 
     var chart = new google.charts.Line(document.getElementById('chart'));
 
-    chart.draw(data, options);
+    chart.draw(chartData, options);
+    prediction(data, tripType)
+}
+
+function prediction(data, tripType) {
+    $("#advice").append('<b>Predication</b><br>'+'Lowest Price : ' + data.lowestPrice/tripType + ' in last 15 days<br>')
+    var direction;
+    var pricePredication;
+    if(data.recommended.predictionNextWeek.prediction > 0) {
+        direction = 'increase'
+    } else {
+        direction = 'decrease'
+        pricePredication = - (parseFloat(data.recommended.predictionNextWeek.prediction))
+    }
+    $("#advice").append('Prediction for next week is price will ' + direction + ' by '
+        + pricePredication+' with confidence ' +
+        data.recommended.predictionNextWeek.confidence)
+
 }

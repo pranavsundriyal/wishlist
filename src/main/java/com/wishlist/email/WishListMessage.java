@@ -6,6 +6,7 @@ import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
+import com.wishlist.model.slim.Time;
 import com.wishlist.util.Util;
 import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Component;
@@ -50,8 +51,9 @@ public class WishListMessage {
             sb.append(response.getSearchResultList().get(i).getUrl()).append("\n");
             for (Leg leg : response.getSearchResultList().get(i).getLegList()) {
                 sb.append("Time departure : " +leg.getDepartureTime().toString()+" | arrival: "+leg.getArrivalTime()+"\n");
-                sb.append("Total duration: "+Util.addLocalTimes(leg.getDuration(),leg.getLayover()).toString()+
-                        " | Layover: " +leg.getLayover().toString()+"\n");
+                Time totalDuration = Util.addLocalTimes(leg.getDuration(),leg.getLayover());
+                Time layover = leg.getLayover();
+                sb.append("Total duration: "+totalDuration.getHour()+" hour " + totalDuration.getMinute() + " minute | Layover: " +layover.getHour() +" hour "+layover.getMinute()+" minute\n");
                 for (Segment segment : leg.getSegments()) {
                     sb.append("Connection Origin: "+segment.getDepartureAirportLocation()+
                             " | Destination: "+segment.getArrivalAirportLocation()+

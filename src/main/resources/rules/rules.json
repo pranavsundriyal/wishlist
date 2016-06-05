@@ -28,16 +28,16 @@
     ]
   },
   { "email" : "psundriyal@expedia.com",
-    "origin" : "NYC",
-    "destination" : "CHI",
-    "departurteDate" : "2016-08-29",
-    "arrivalDate" : "",
+    "origin" : "CHI",
+    "destination" : "LAS",
+    "departurteDate" : "2016-11-23",
+    "arrivalDate" : "2016-11-27",
     "flex" : "0",
     "filters" : [
       {
         "filterType" : "price",
         "filterMap" : {
-          "lowerLimit" : "75"
+          "lowerLimit" : "300"
         }
       },
       {
@@ -50,31 +50,28 @@
     ]
   },
   {
-    "email" : "psundriyal@expedia.com",
+    "email" : "pransund@indiana.edu",
     "origin" : "CHI",
-    "destination" : "ATL",
-    "departurteDate" : "2016-11-23",
-    "arrivalDate" : "2016-11-27",
-    "flex" : "2",
-    "filters" : [
-      {
-        "filterType" : "price",
-        "filterMap" : {
-          "lowerLimit" : "120"
-        }
-      },
-      {
-        "filterType" : "duration",
-        "filterMap" : {
-          "hours" : "3"
-        }
-      },
-      {
-        "filterType" : "stops",
-        "filterMap" : {
-          "noStops" : "0"
-        }
+    "destination" : "LAS",
+    "departurteDate" : "2016-10-21",
+    "arrivalDate" : "2016-10-24",
+    "flex" : "0",
+    "filters" : [ {
+      "filterType" : "price",
+      "filterMap" : {
+        "lowerLimit" : "300"
       }
-    ]
+    }, {
+      "filterType" : "stops",
+      "filterMap" : {
+        "noStops" : "0"
+      }
+    }, {
+      "filterType" : "departureTime",
+      "filterMap" : {
+        "hours" : "16",
+        "time" : "after"
+      }
+    } ]
   }
 ]
