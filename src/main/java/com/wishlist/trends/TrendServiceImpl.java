@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wishlist.compression.CompressionUtil;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
+import com.wishlist.model.trends.Trend;
 import com.wishlist.model.trends.TrendResponse;
 import net.sf.ehcache.Cache;
 import net.sf.ehcache.CacheManager;
@@ -18,6 +19,9 @@ import org.springframework.web.client.RestTemplate;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Stack;
 import java.util.concurrent.Callable;
 
 /**
@@ -44,7 +48,7 @@ public class TrendServiceImpl {
         TrendResponse response = restTemplate.getForObject(url, TrendResponse.class);
         //TrendResponse response = readJson();
 
-        return response;
+        return postProcessing(response);
     }
     public String getParams(Request request) {
         StringBuilder params = new StringBuilder();
@@ -89,5 +93,27 @@ public class TrendServiceImpl {
         }
 
         return response;
+    }
+
+    public TrendResponse postProcessing(TrendResponse trendResponse) {
+
+        List<Trend> trends = new ArrayList<>();
+        float lowest = 999999;
+        Stack<Trend> trendStack = new Stack<>();
+        for (Trend trend : trendResponse.getRecommended().getTrends()) {
+            trendStack.push(trend);
+            if (Float.parseFloat(trend.getMin()) < lowest){
+                lowest = Float.parseFloat(trend.getMin());
+            }
+        }
+
+        while (!trendStack.empty()){
+            trends.add(trendStack.pop());
+        }
+        trendResponse.getRecommended().setTrends(trends);
+        trendResponse.setLowestPrice(Float.toString(lowest));
+        trendResponse.setLastSeenPrice(trendResponse.getRecommended().getTrends().get(trendResponse.getRecommended()
+                .getTrends().size()-1).getMin());
+        return trendResponse;
     }
 }

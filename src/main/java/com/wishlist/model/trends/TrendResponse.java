@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Generated("org.jsonschema2pojo")
 @JsonPropertyOrder({
         "recommended"
 })
@@ -21,6 +20,9 @@ public class TrendResponse {
     private Recommended recommended;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
+
+    private String lowestPrice;
+    private String lastSeenPrice;
 
     /**
      *
@@ -52,4 +54,19 @@ public class TrendResponse {
         this.additionalProperties.put(name, value);
     }
 
+    public String getLowestPrice() {
+        return lowestPrice;
+    }
+
+    public void setLowestPrice(String lowestPrice) {
+        this.lowestPrice = lowestPrice;
+    }
+
+    public String getLastSeenPrice() {
+        return lastSeenPrice;
+    }
+
+    public void setLastSeenPrice(String lastSeenPrice) {
+        this.lastSeenPrice = lastSeenPrice;
+    }
 }

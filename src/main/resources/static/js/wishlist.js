@@ -83,7 +83,7 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
-    $("#trends").click(function () {
+    $("#search").click(function () {
         $.ajax({
             type: "GET",
             url: "trend",
@@ -95,7 +95,7 @@ $(document).ready(function() {
             success: function (data) {
                 $('#chart').empty();
                 if (data) {
-                    drawChart(data.recommended.trends)
+                    drawChart(data)
                 } else {
                     $("#trendsResult").append('<br>error while getting trends<br>');
                 }
