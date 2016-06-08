@@ -17,7 +17,7 @@ function drawChart(data) {
     }
     var x = new Array(trends.length);
     for (var i = 0; i < trends.length; i++) {
-        x[i] = new Array(3);
+        x[i] = new Array(5);
     }
 
     for (var i=0; i< trends.length; i++) {
@@ -56,9 +56,9 @@ function drawChart(data) {
 }
 
 function prediction(data, tripType) {
-    $("#advice").append('<b>Predication</b><br>'+'Lowest Price : ' + data.lowestPrice/tripType + ' in last 15 days<br>')
+    $("#advice").append('<b>Prediction</b><br>'+'Lowest Price : ' + data.lowestPrice/tripType + ' in last 15 days<br>')
     var direction;
-    var pricePredication;
+    var pricePredication = data.recommended.predictionNextWeek.prediction;
     if(data.recommended.predictionNextWeek.prediction > 0) {
         direction = 'increase'
     } else {

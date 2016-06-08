@@ -115,7 +115,7 @@ $(document).ready(function() {
                 },
                 success: function (data) {
                     $('#rules').empty();
-                    $("#rules").append(data);
+                    printWishlists(JSON.parse(data))
                 }
             });
         }
@@ -145,6 +145,15 @@ $(document).ready(function() {
 });
 
 
+function printWishlists(data){
+
+    $("#rules").append('<b>Wishlist</b>');
+    for(var i =0 ; i < data.length; i++) {
+        $("#rules").append('<br><br>'+(i+1)+') '+data[i].email+' : '+data[i].origin +' -> '+data[i].destination+' | '+data[i].departurteDate+' | '
+        +data[i].arrivalDate + '|  FLex : ' +data[i].flex +'<br> Fliters : '+JSON.stringify(data[i].filters));
+    }
+
+}
 
 
 function getTime(time) {

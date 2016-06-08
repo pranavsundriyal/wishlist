@@ -3,6 +3,8 @@
     <meta charset="UTF-8">
     <title> WishList</title>
     <link rel="stylesheet" href="css/jquery-ui.css">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
     <script src="js/jquery.js"></script>
     <script src="js/jquery-ui.js"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -12,26 +14,39 @@
     </script>
 </head>
 <body>
-<div>
-    <div>
+
+<div><div class="container">
+    <div class="jumbotron">
+        <h1 align="center">Wishlist</h1>
+        <p align="center">Search -> Filter -> Analyze -> Subscribe</p>
+        <p align="center" class="lead">Search for Cheap flight. See trends for the flight. Filter the ones you like. Save the filters to recieve notifications via email when the price and filters set are met </p>
+    </div>
+    <div class="row"><div class="col-md-8 col-centered">
+        <div class="form-group">
     Origin :<input type="text" id="origin" value="CHI"><br><br>
     Destination :<input type="text" id="dest" value="SEA"><br><br>
     Departure :<input type="text" id="departure" value="2016-07-20"><br><br>
     Arrival :<input type="text" id="arrival" value="2016-08-02"><br><br>
-    Price: <input type="text" id="price" value="1100"><br><br>
-    Airline : <input type="text" id="airline">    include<input type="radio" name="airline" value="include">    exclude<input type="radio" name="airline" value="exclude"><br><br>
-    Connection Stops : <input type="text" id="connection">    include<input type="radio" name="connection" value="include">    exclude<input type="radio" name="connection" value="exclude"><br><br>
+    Price: <input type="text" id="price" value="300"><br><br>
+    Airline : <input type="text" id="airline">
+            <label class="radio-inline"><input type="radio"  name="airline" value="include">include</label><label class="radio-inline"><input type="radio" name="airline" value="exclude">exclude</label><br><br>
+    Connection Stops : <input type="text" id="connection">
+        <label class="radio-inline"><input type="radio" name="connection" value="include">include</label><label class="radio-inline"> <input type="radio" name="connection" value="exclude">exclude</label><br><br>
     Duration : <input type="text" id="duration"><br><br>
     Layover : <input type="text" id="layover"><br><br>
     Stops : <input type="text" id="stops"><br><br>
-    Flight Number : <input type="text" id="flightNumber">    include<input type="radio" name="flightNumber" value="include">    exclude<input type="radio" name="flightNumber" value="exclude"><br><br>
-    Departure Time : <input type="text" id="departureTime">    before<input type="radio" name="departTime" value="before">    after<input type="radio" name="departTime" value="after"><br><br>
-    Arrival Time : <input type="text" id="arrivalTime">    before<input type="radio" name="arrivalTime" value="before">    after<input type="radio" name="arrivalTime" value="after"><br><br>
-    Flex:  0<input type="radio" name="flex" value="0" checked> 2<input type="radio" name="flex" value="2">    3<input type="radio" name="flex" value="3"><br><br>
-    <button id="search" type="button" >Search</button><br><br>
+    Flight Number : <input type="text" id="flightNumber">
+        <label class="radio-inline"><input type="radio" name="flightNumber" value="include">include</label><label class="radio-inline"> <input type="radio" name="flightNumber" value="exclude">exclude</label><br><br>
+    Departure Time : <input type="text" id="departureTime">
+        <label class="radio-inline"><input type="radio" name="departTime" value="before">before</label><label class="radio-inline"> <input type="radio" name="departTime" value="after">after</label><br><br>
+    Arrival Time : <input type="text" id="arrivalTime">
+        <label class="radio-inline"><input type="radio" name="arrivalTime" value="before">before</label><label class="radio-inline"><input type="radio" name="arrivalTime" value="after">after</label><br><br>
+    Flex:  <label class="radio-inline"><input type="radio" name="flex" value="0" checked>0</label> <label class="radio-inline"><input type="radio" name="flex" value="2">2</label><label class="radio-inline"><input type="radio" name="flex" value="3">3</label><br><br>
+            Autobook: <input type="radio" value="0"><br><br>
+            <button id="search" class="btn-primary" type="button" >Search</button><br><br>
     Email : <input type="text" id="email"><br><br>
-    <button id="save" type="button" >Subscribe</button><button id="lookup" type="button" >Look Up</button>
-        <button id="unsubscribe" type="button" >Unsubscribe</button><br><br>
+    <button id="save" class="btn-primary" type="button" >Subscribe</button>&nbsp;&nbsp;&nbsp;<button id="lookup" class="btn-primary" type="button" >Look Up</button>&nbsp;&nbsp;&nbsp;
+        <button id="unsubscribe" class="btn-primary" type="button" >Unsubscribe</button><br><br>
     </div>
     <div id="status"></div><br>
     <div id="rules"></div><br><br>
@@ -39,6 +54,6 @@
     <div id="chart"></div><br>
     <div id="results"></div><br><br>
 
-</div>
+</div></div></div></div>
 </body>
 </html>
