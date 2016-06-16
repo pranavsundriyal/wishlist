@@ -4,10 +4,11 @@ import com.wishlist.model.Leg;
 import com.wishlist.model.Segment;
 import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
+import com.wishlist.model.slim.SearchResult;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.model.slim.Time;
 import com.wishlist.util.Util;
-
+import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Component;
 
 import java.util.logging.Logger;
@@ -27,95 +28,43 @@ public class WishListMessage {
 
         StringBuffer sb = new StringBuffer();
 
-        sb.append("<html>");
-        sb.append("<head>\n")
-                .append("   <style>")
-                .append("   table {border-collapse:collapse; table-layout:fixed; width:310px;}")
-                .append("   table td {border:solid 1px; width:225px; word-wrap:break-word; padding:3px;}")
-                .append("   div.asdf {width:693px; white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -pre-wrap; white-space: -o-pre-wrap; word-wrap: break-word;}")
-                .append("   </style>")
-                .append("</head>");
-//        sb.append("<html>" +
-//                "<table>" +
-//                "<tr>" +
-//                "<td>r1c1</td>" +
-//                "<td>r1c2</td>" +
-//                "</tr>" +
-//                "<tr>" +
-//                "<td>r2c1</td>" +
-//                "<td>r2c2</td>" +
-//                "</tr>" +
-//                "</table>");
-
-        sb.append("<body>");
-
-        sb.append("<br>For Trip<br>");
+        sb.append("\nFor Trip\n");
 
         sb.append(createSubject(rule));
-        sb.append("<br><br>");
+        sb.append("\n\n");
 
-        sb.append("<table border=\"1\"><tr><td>Filter</td><td>Value</td><td>No. of search results</td></tr>");
-
-//        sb.append("Filters : No. of Search Results\n");
+        sb.append("Filters : No. of Search Results\n");
         for (Filter filter : rule.getFilters()){
-            sb.append("<tr>")
-                    .append("<td>")
-                    .append(filter.getFilterType())
-                    .append("</td>")
-//                    .append("-")
-                    .append("<td>")
-                    .append(filter.getFilterMap().toString())
-                    .append("</td>")
-//                    .append(" : ")
-                    .append("<td>")
-                    .append(response.getFilterCountMap().get(filter.getFilterType()))
-                    .append("</td>")
-                    .append("</tr>");
-//                    .append("\n");
+            sb.append(filter.getFilterType()).append("-").append(filter.getFilterMap().toString()).append(" : ")
+                    .append(response.getFilterCountMap().get(filter.getFilterType())).append("\n");
         }
 
-        sb.append("</table>");
-
-        sb.append("<br>Top results found for the above Filters<br>");
-        sb.append("<div class='asdf'>url : "+createURL(rule)+"<br></div>");
-        sb.append("No. of results found: " +response.getSearchResultList().size() + " <br>Showing top 10 or less results<br><br>");
+        sb.append("\nTop results found for the above Filters\n");
+        sb.append("url : "+createURL(rule)+"\n");
+        sb.append("\nNo. of results found: " +response.getSearchResultList().size() + " \nShowing top 10 or less results\n");
         int noResults=10;
         if (response.getSearchResultList().size() < 10) {
             noResults = response.getSearchResultList().size();
         }
-
-        sb.append("<table border=\"1\"><tr><td>Price</td><td>Schedule</td><td>Link</td></tr>");
-
         for (int i =0; i< noResults; i++){
-            sb.append("<tr>");
-            sb.append("<td>" + response.getSearchResultList().get(i).getPrice() + " USD</td>");
-            sb.append("<td>");
-            int n = 1;
+            sb.append("\n Price: " + response.getSearchResultList().get(i).getPrice()+" USD").append("\n");
+            sb.append(response.getSearchResultList().get(i).getUrl()).append("\n");
             for (Leg leg : response.getSearchResultList().get(i).getLegList()) {
-                sb.append("Slice #" + n + ":<br>");
-                sb.append("Departure time: " +leg.getDepartureTime().toString()+"<br>Arrival time: "+leg.getArrivalTime()+"<br>");
+                sb.append("Time departure : " +leg.getDepartureTime().toString()+" | arrival: "+leg.getArrivalTime()+"\n");
                 Time totalDuration = Util.addLocalTimes(leg.getDuration(),leg.getLayover());
                 Time layover = leg.getLayover();
-                sb.append("Total duration: "+totalDuration.getHour()+" hour " + totalDuration.getMinute() + " minute<br>Layover: " +layover.getHour() +" hour "+layover.getMinute()+" minute<br>");
-                sb.append("Segments:<br>");
+                sb.append("Total duration: "+totalDuration.getHour()+" hour " + totalDuration.getMinute() + " minute | Layover: " +layover.getHour() +" hour "+layover.getMinute()+" minute\n");
                 for (Segment segment : leg.getSegments()) {
-                    sb.append("Origin: "+segment.getDepartureAirportLocation()+
-                            "<br>Destination: "+segment.getArrivalAirportLocation()+
-                            "<br>Airline: "+segment.getAirlineName());
-                    sb.append("<br>");
+                    sb.append("Connection Origin: "+segment.getDepartureAirportLocation()+
+                            " | Destination: "+segment.getArrivalAirportLocation()+
+                            " | Airline: "+segment.getAirlineName());
+                    sb.append("\n");
                 }
-                sb.append("<br>");
-                n++;
+                sb.append("\n");
             }
-            sb.append("</td>");
-            sb.append("<td width=\"100\">"+response.getSearchResultList().get(i).getUrl()+"</td>");
-            sb.append("</tr>");
         }
 
-        sb.append("</table>");
 
-        sb.append("</body>");
-        sb.append("</html>");
         return sb.toString();
     }
 

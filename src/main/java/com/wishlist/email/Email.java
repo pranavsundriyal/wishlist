@@ -2,21 +2,13 @@ package com.wishlist.email;
 
 import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
-
+import com.wishlist.util.Util;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.Properties;
-
-import javax.mail.Authenticator;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.PasswordAuthentication;
-import javax.mail.Session;
-import javax.mail.Transport;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import java.util.*;
+import javax.mail.*;
+import javax.mail.internet.*;
 
 @Component
 public class Email {
@@ -52,8 +44,7 @@ public class Email {
             msg.setRecipients(Message.RecipientType.TO,
                     InternetAddress.parse(rule.getEmail(),false));
             msg.setSubject(WishListMessage.createSubject(rule));
-            msg.setContent(WishListMessage.createMessage(rule, response), "text/html");
-//            msg.setText(WishListMessage.createMessage(rule, response));
+            msg.setText(WishListMessage.createMessage(rule, response));
             msg.setSentDate(new Date());
             Transport.send(msg);
         }catch (MessagingException e){ System.out.println("error cause: " + e);}
