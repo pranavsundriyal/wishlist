@@ -123,6 +123,25 @@ $(document).ready(function() {
 });
 
 $(document).ready(function() {
+    $("#deleteRule").click(function () {
+        if ($("#emailWishList").text().length > 0 && $("#ruleNo").val().length) {
+            $.ajax({
+                type: "GET",
+                url: "deleteRule",
+                data: {
+                    email: $('#emailWishList').text(),
+                    ruleNo: $("#ruleNo").val()
+                },
+                success: function (data) {
+                    $('#rules').empty();
+                    printWishlists(JSON.parse(data))
+                }
+            });
+        }
+    });
+});
+
+$(document).ready(function() {
     $("#unsubscribe").click(function () {
         if ($("#email").val().length >0) {
             $.ajax({
@@ -147,10 +166,11 @@ $(document).ready(function() {
 
 function printWishlists(data){
 
-    $("#rules").append('<b>Wishlist</b>');
+    $("#emailWishList").empty();
+    $("#emailWishList").append(data[0].email);
     for(var i =0 ; i < data.length; i++) {
-        $("#rules").append('<br><br>'+(i+1)+') '+data[i].email+' : '+data[i].origin +' -> '+data[i].destination+' | '+data[i].departurteDate+' | '
-        +data[i].arrivalDate + '|  FLex : ' +data[i].flex +'<br> Fliters : '+JSON.stringify(data[i].filters));
+        $("#rules").append('<br>'+(i+1)+') '+data[i].origin +' -> '+data[i].destination+' | '+data[i].departurteDate+' | '
+        +data[i].arrivalDate + '|  FLex : ' +data[i].flex +'<br> Fliters : '+JSON.stringify(data[i].filters)+'<br>');
     }
 
 }

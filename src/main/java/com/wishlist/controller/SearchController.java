@@ -4,6 +4,7 @@ import com.wishlist.converter.SlimConverter;
 import com.wishlist.filter_engine.FileManager;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
+import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.filter_engine.FilterChainEngine;
 import com.wishlist.service.ExpediaSearchServiceImpl;
@@ -79,5 +80,11 @@ public class SearchController {
     @RequestMapping(value = "/unsubscribe", method = RequestMethod.GET)
     public Boolean unsubscribe(@RequestParam(value="email", required=true) String email) throws Exception {
         return fileManager.delete(email);
+    }
+
+    @RequestMapping(value = "/deleteRule", method = RequestMethod.GET)
+    public List<Rule> deleteRule(@RequestParam(value="email", required=true) String email,
+                                 @RequestParam(value ="ruleNo", required = true) String ruleNo) throws Exception {
+        return fileManager.deleteRule(email, Integer.parseInt(ruleNo)-1);
     }
 }

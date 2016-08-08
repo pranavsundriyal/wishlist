@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.wishlist.compression.CompressionUtil;
+import com.wishlist.model.rule.Filter;
 import com.wishlist.model.rule.Rule;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -34,7 +35,7 @@ import java.util.zip.GZIPOutputStream;
 public class FileManager {
 
     @Value("${setting.filepath}")
-    private String filePath;
+    protected String filePath;
 
     public List<Rule> readRules() {
 
@@ -159,6 +160,55 @@ public class FileManager {
         }
         return false;
     }
+
+    public  List<Rule> deleteRule(String email, int ruleNo){
+        File[] files = new File(filePath).listFiles();
+        List<Rule> ruleList = null;
+
+        for (File file : files) {
+            if (file.isFile()) {
+                if (file.getName().contains(email)) {
+                    String rules = readFile(file);
+                    ObjectMapper mapper = new ObjectMapper();
+                    try {
+                        ruleList = mapper.readValue(rules, new TypeReference<List<Rule>>() {});
+                        if (ruleNo < ruleList.size()) {
+                            ruleList.remove(ruleNo);
+                            delete(email);
+                            if (ruleList.size() > 0)
+                                saveRules(ruleList);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException a){
+                        a.printStackTrace();
+                    } catch (NullPointerException npe) {
+                        npe.printStackTrace();
+                    } catch (IOException exception) {
+                        exception.printStackTrace();
+                    }
+                }
+            }
+        }
+        return ruleList;
+    }
+
+    public Boolean saveRules(List<Rule> rules){
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String content = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(rules);
+            File file = new File(filePath+"/"+rules.get(0).getEmail()+".json");
+            file.createNewFile();
+            FileWriter fw = new FileWriter(file.getAbsoluteFile());
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+
     public List<String> lookUp(String email) {
         List<String> results = new ArrayList<>();
         File[] files = new File(filePath).listFiles();
@@ -198,6 +248,14 @@ public class FileManager {
         } catch (IOException e){
             e.printStackTrace();
         }
+    }
+
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
     }
 }
 

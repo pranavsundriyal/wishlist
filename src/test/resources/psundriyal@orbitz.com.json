@@ -1,0 +1,97 @@
+[ {
+  "email" : "psundriyal@orbitz.com",
+  "origin" : "CHI",
+  "destination" : "BOM",
+  "departurteDate" : "2016-10-21",
+  "arrivalDate" : "2016-10-24",
+  "flex" : "0",
+  "filters" : [ {
+    "filterType" : "price",
+    "filterMap" : {
+      "lowerLimit" : "300"
+    }
+  }, {
+    "filterType" : "stops",
+    "filterMap" : {
+      "noStops" : "0"
+    }
+  }, {
+    "filterType" : "departureTime",
+    "filterMap" : {
+      "hours" : "16",
+      "time" : "after"
+    }
+  } ]
+}, {
+  "email" : "psundriyal@orbitz.com",
+  "origin" : "CHI",
+  "destination" : "LAX",
+  "departurteDate" : "2016-10-21",
+  "arrivalDate" : "2016-10-24",
+  "flex" : "0",
+  "filters" : [ {
+    "filterType" : "price",
+    "filterMap" : {
+      "lowerLimit" : "300"
+    }
+  }, {
+    "filterType" : "stops",
+    "filterMap" : {
+      "noStops" : "0"
+    }
+  }, {
+    "filterType" : "departureTime",
+    "filterMap" : {
+      "hours" : "16",
+      "time" : "after"
+    }
+  } ]
+}, {
+  "email" : "psundriyal@orbitz.com",
+  "origin" : "CHI",
+  "destination" : "SFO",
+  "departurteDate" : "2016-10-21",
+  "arrivalDate" : "2016-10-24",
+  "flex" : "0",
+  "filters" : [ {
+    "filterType" : "price",
+    "filterMap" : {
+      "lowerLimit" : "300"
+    }
+  }, {
+    "filterType" : "stops",
+    "filterMap" : {
+      "noStops" : "0"
+    }
+  }, {
+    "filterType" : "departureTime",
+    "filterMap" : {
+      "hours" : "16",
+      "time" : "after"
+    }
+  } ]
+}, {
+  "email" : "psundriyal@orbitz.com",
+  "origin" : "CHI",
+  "destination" : "DED",
+  "departurteDate" : "2016-10-21",
+  "arrivalDate" : "2016-10-24",
+  "flex" : "0",
+  "filters" : [ {
+    "filterType" : "price",
+    "filterMap" : {
+      "lowerLimit" : "300"
+    }
+  }, {
+    "filterType" : "stops",
+    "filterMap" : {
+      "noStops" : "0"
+    }
+  }, {
+    "filterType" : "departureTime",
+    "filterMap" : {
+      "hours" : "16",
+      "time" : "after"
+    }
+  } ]
+} ]

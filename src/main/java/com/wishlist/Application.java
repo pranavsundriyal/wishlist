@@ -1,6 +1,7 @@
 package com.wishlist;
 
 import net.sf.ehcache.CacheManager;
+import org.apache.catalina.connector.Connector;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -48,4 +49,5 @@ public class Application {
     public ExecutorService flexExecutorService(){
         return Executors.newFixedThreadPool(10);
     }
+
 }
