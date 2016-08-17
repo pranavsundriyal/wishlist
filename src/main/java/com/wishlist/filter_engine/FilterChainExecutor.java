@@ -36,7 +36,14 @@ public class FilterChainExecutor implements Runnable {
         this.cacheManager =cacheManager;
     }
 
-    private void execute() {
+    public FilterChainExecutor(Rule rule, Email email, FlexThreadManager flexThreadManager, CacheManager cacheManager) {
+        this.rule = rule;
+        this.email = email;
+        this.flexThreadManager = flexThreadManager;
+        this.cacheManager =cacheManager;
+    }
+
+    public void execute() {
 
         log.info("executing rule : " + rule.toString());
         Request request = Util.creatRequestFromRule(rule);
@@ -61,7 +68,7 @@ public class FilterChainExecutor implements Runnable {
     }
 
 
-    private void executePeriodically(){
+    public void executePeriodically(){
         while (true) {
             execute();
             try {

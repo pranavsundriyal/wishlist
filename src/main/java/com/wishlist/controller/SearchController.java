@@ -1,6 +1,7 @@
 package com.wishlist.controller;
 
 import com.wishlist.converter.SlimConverter;
+import com.wishlist.email.Email;
 import com.wishlist.filter_engine.FileManager;
 import com.wishlist.model.Request;
 import com.wishlist.model.Response;
@@ -8,6 +9,8 @@ import com.wishlist.model.rule.Rule;
 import com.wishlist.model.slim.SlimResponse;
 import com.wishlist.filter_engine.FilterChainEngine;
 import com.wishlist.service.ExpediaSearchServiceImpl;
+import com.wishlist.thread.FlexThreadManager;
+import com.wishlist.thread.SingleThreadManager;
 import com.wishlist.thread.ThreadManager;
 import net.sf.ehcache.CacheManager;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutorService;
 import java.util.logging.Logger;
 
 @RestController
@@ -37,6 +41,15 @@ public class SearchController {
 
     @Autowired
     private CacheManager cacheManager;
+
+    @Autowired
+    private ExecutorService rulesExecutorService;
+
+    @Autowired
+    private FlexThreadManager flexThreadManager;
+
+    @Autowired
+    private Email email;
 
     @RequestMapping(value = "/search", method = RequestMethod.GET)
 	public SlimResponse search(@RequestParam(value="origin", required=true) String origin,
@@ -67,9 +80,12 @@ public class SearchController {
     }
 
     @RequestMapping(value = "/job", method = RequestMethod.GET)
-    public int search(@RequestParam(value="interval", required=true) String period) throws Exception {
+    public String search(@RequestParam(value="interval", required=true) String period) throws Exception {
         log.info("Executing all rules");
-        return threadManager.executeRules(fileManager.readRules(), Integer.parseInt(period));
+        SingleThreadManager singleThreadManager = new SingleThreadManager(flexThreadManager, email, cacheManager,
+                fileManager, Integer.parseInt(period));
+        rulesExecutorService.execute(singleThreadManager);
+        return "successfully started";
     }
 
     @RequestMapping(value = "/lookup", method = RequestMethod.GET)
