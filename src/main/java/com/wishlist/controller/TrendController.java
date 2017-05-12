@@ -28,7 +28,8 @@ public class TrendController {
                                 @RequestParam(value = "departure", required = true) String departureDate)
             throws Exception {
 
-        return trendService.executeCall(new Request(departureDate, origin, destination));
+        //trendService.executeCall(new Request(departureDate, origin, destination));
+        return null;
 
     }
 }

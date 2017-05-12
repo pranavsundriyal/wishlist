@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.util.ReflectionUtils;
 
+import java.net.URL;
 import java.util.List;
 import java.util.function.BooleanSupplier;
 
@@ -30,6 +31,5 @@ public class FileManagerTest {
         List<Rule> ruleList = fileManager.deleteRule("psundriyal@orbitz.com", 10);
         assertNotNull(ruleList);
     }
-
 
 }
